@@ -13,7 +13,49 @@
       box-sizing: border-box;
     }
 
-    
+    .fancy {
+      --b: 6px;
+      /* control the border thickness */
+      --w: 80px;
+      /* control the width of the line*/
+      --g: 15px;
+      /* control the gap */
+      --c: #0B486B;
+
+      width: fit-content;
+      padding: 0 1em;
+      line-height: 1.6em;
+      border: 1px solid;
+      color: #fff;
+      background:
+        conic-gradient(from 45deg at left, var(--c) 25%, #0000 0) 0,
+        conic-gradient(from -135deg at right, var(--c) 25%, #0000 0) 100%;
+      background-size: 51% 100%;
+      background-origin: border-box;
+      background-repeat: no-repeat;
+      border-image:
+        linear-gradient(#0000 calc(50% - var(--b)/2),
+          var(--c) 0 calc(50% + var(--b)/2),
+          #0000 0) 1/0 var(--w)/calc(var(--w) + var(--g));
+      margin-inline: auto;
+      margin-top: 50px;
+      margin-bottom: 15px;
+    }
+
+    .card-deck {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .card {
+      margin-top: 10px;
+      margin-right: 1px;
+      /* spacing between cards */
+      margin-bottom: 20px;
+      /* spacing between rows */
+    }
+
   </style>
 </head>
 
@@ -60,39 +102,43 @@
     </a>
   </div>
   <div class="container">
-    <h1 style="margin-top: 100px;">Event Terbaru</h1>
+    <h1 class="fancy">Event Terbaru</h1>
     <div class="card-deck">
-      <div class="card">
-        <img class="card-img-top" src="https://img.freepik.com/free-photo/beautiful_1203-2633.jpg?w=740&t=st=1696145005~exp=1696145605~hmac=cc41de6a27d39300d211614df75e302db995056650930e24b2a85c90c8cf9a1e" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img-top" src="https://img.freepik.com/free-photo/beautiful_1203-2633.jpg?w=740&t=st=1696145005~exp=1696145605~hmac=cc41de6a27d39300d211614df75e302db995056650930e24b2a85c90c8cf9a1e" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-      <div class="card">
-        <img class="card-img-top" src="https://img.freepik.com/free-photo/beautiful_1203-2633.jpg?w=740&t=st=1696145005~exp=1696145605~hmac=cc41de6a27d39300d211614df75e302db995056650930e24b2a85c90c8cf9a1e" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</p>
-        </div>
-        <div class="card-footer">
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+      @foreach($event as $ev)
+      @if($count % 3 == 0)
+      @if($count != 0)
     </div>
+    @endif
+    <div class="row">
+      @endif
+      <div class="col-md-4">
+        <div class="card">
+          <img class="card-img-top" src="{{ asset('fotoacara/'.$ev->gambar)}}" alt="{{$ev->gambar}}">
+          <div class="card-body">
+            <h5 class="card-title text-center">{{$ev->nama_acara}}</h5>
+            <!-- <p class="card-text">{{date('d F Y', strtotime($ev->waktu_mulai))}} - {{date('d F Y', strtotime($ev->waktu_selesai))}} <br>
+              {{date('H i', strtotime($ev->waktu_mulai))}} - {{date('H i', strtotime($ev->waktu_selesai))}}<br>
+              Batas Pendafaran : {{date('d F Y', strtotime($ev->batas_pendaftaran))}} <br>
+              @if($ev->harga == null)
+              Harga : Gratis <br>
+              @else
+              Harga : Rp. {{$ev->harga}} <br>
+              @endif
+              Lokasi : {{$ev->lokasi}} <br>
+              Terbuka Untuk : {{$ev->terbuka_untuk}}
+            </p> -->
+            <p class="card-text">{{$ev->deskripsi}}</p>
+          </div>
+          <div class="card-footer">
+            <a href="/login" class="btn btn-primary">Daftar Sekarang</a>
+          </div>
+        </div>
+      </div>
+      @endforeach
+    </div>
+  </div>
+
+
   </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

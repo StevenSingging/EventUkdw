@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'nama', 'username', 'password', 'nim', 'nidn', 'email', 'nowa', 'role',
+        'nama', 'password', 'nim', 'nidn', 'email', 'nowa', 'role',
     ];
 
     /**
@@ -37,4 +37,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function riwayat(){
+        return $this->hasMany(History::class,'user_id','id');
+    }
+
+    public function userp(){
+        return $this->hasMany(Pendaftaran_Acara::class,'user_id','id');
+    }
 }

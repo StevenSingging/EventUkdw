@@ -33,6 +33,9 @@ class EventRequest extends FormRequest
             // 'batas_pendaftaran' => 'required',
             // 'gambar' => 'required',
             // 'terbuka_untuk' => 'required'
+            
+            'gambar' => 'file|mimes:jpeg,png,jpg,pdf,doc,docx,xls,xlsx,ppt,pptx,txt|max:2048'
+
         ];
     }
 }

@@ -17,11 +17,13 @@ class CreateEventsTable extends Migration
             $table->id();
             $table->string('jenis_acara');
             $table->string('nama_acara');
-            $table->string('deskripsi');
-            $table->string('waktu');
+            $table->string('warna');
+            $table->text('deskripsi');
+            $table->dateTime('waktu_mulai');
+            $table->dateTime('waktu_selesai');
             $table->string('lokasi');
             $table->integer('harga');
-            $table->integer('batas pendaftaran');
+            $table->dateTime('batas pendaftaran');
             $table->string('gambar');
             $table->string('terbuka_untuk');
             $table->timestamps();

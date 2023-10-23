@@ -22,7 +22,6 @@ class RegisterController extends Controller
             // Data no_induk belum ada, buat entri baru
             User::create([
                 'nama' => $request->nama,
-                'username' => $request->username,
                 'role' => $request->role,
                 'nim' => $request->nim,
                 'nidn' => $request->nidn,
@@ -39,14 +38,14 @@ class RegisterController extends Controller
     public function postlogin (Request $request){
         //dd($request->all());
         $input=$request->all();
-        if(auth()->attempt(array('username' => $input['username'], 'password' => $input['password']))){
+        if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))){
             if(auth()->user()->role=='Mahasiswa'){
                 return redirect('dashboard/mahasiswa');
             }else if(auth()->user()->role=='Dosen'){
                 return redirect('dashboard/dosen');
-            }else if(auth()->user()->role=='Biro3'){
-                return redirect('dashboard/biro');
-            }else if(auth()->user()->role=='Biro2'){
+            }else if(auth()->user()->role=='Biro 4'){
+                return redirect('dashboard/biro4');
+            }else if(auth()->user()->role=='Biro 2'){
                 return redirect('dashboard/biro');
             }else if(auth()->user()->role=='Umum'){
                 return redirect('dashboard/umum');

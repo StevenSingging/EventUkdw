@@ -42,21 +42,11 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="username" placeholder="Username">
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                <span class="fas fa-user"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group mb-3">
                         <select class="custom-select" name="role" id="roleSelect">
                             <option selected>Choose...</option>
                             <option value="Mahasiswa">Mahasiswa</option>
                             <option value="Dosen">Dosen</option>
                             <option value="Umum">Umum</option>
-                            <option value="Biro2">Biro 2</option>
-                            <option value="Biro3">Biro 3</option>
                         </select>
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -146,18 +136,9 @@
             nidnInput.disabled = false;
             nimInput.disabled = true;
         } else if (roleSelect.value === 'Umum'){
-           
             nidnInput.disabled = true;
             nimInput.disabled = true;
-        } else if (roleSelect.value === 'Biro2'){
-            
-            nidnInput.disabled = false;
-            nimInput.disabled = true;
-        } else if (roleSelect.value === 'Biro3'){
-            
-            nidnInput.disabled = false;
-            nimInput.disabled = true;
-        } else {
+        }else {
             
             nidnInput.disabled = true;
             nimInput.disabled = true;

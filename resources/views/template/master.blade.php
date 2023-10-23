@@ -42,10 +42,6 @@
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <span class="hidden-xs">{{auth()->user()->nama}}</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                        <a class="dropdown-item" href="{{route('logout')}}" onclick="return confirm('Apakah Anda yakin akan logout ?')" role="button">Log Out</a>
-
-                    </div>
                 </li>
             </ul>
         </nav>

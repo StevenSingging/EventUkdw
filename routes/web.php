@@ -14,9 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('/login', function () {
     return view('login');
@@ -26,38 +23,35 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/master', function () {
-    return view('template.master');
-});
-
-Route::get('/dashboard/biro', function () {
-    return view('biro.dashboard');
-});
-
 Route::get('/dashboard/dosen', function () {
     return view('dosen.dashboard');
 });
 
-Route::get('/dashboard/mahasiswa', function () {
-    return view('mahasiswa.dashboard');
-});
 
 Route::get('/dashboard/umum', function () {
     return view('umum.dashboard');
 });
 
-Route::get('/dashboard/admin', function () {
-    return view('admin.dashboard');
-});
 
 Route::post('/simpanregistrasi', '\App\Http\Controllers\RegisterController@simpanregistrasi')->name('simpanregistrasi');
 Route::post('/postlogin','\App\Http\Controllers\RegisterController@postlogin')->name('postlogin');
 Route::get('/logout','\App\Http\Controllers\RegisterController@logout')->name('logout');
+Route::get('/','\App\Http\Controllers\AdminController@home')->name('home');
 
+Route::get('/dashboard/biro4','\App\Http\Controllers\AdminController@index')->name('dashboard.admin');
+Route::get('/peserta/biro4','\App\Http\Controllers\AdminController@peserta')->name('peserta.admin');
 Route::post('/simpanacara','\App\Http\Controllers\AdminController@simpanacara')->name('simpanacara');
 Route::get('/list/acara','\App\Http\Controllers\AdminController@listacara')->name('acara.list');
-Route::get('/manage_acara/admin','\App\Http\Controllers\AdminController@index')->name('manage');
+Route::get('/manage_acara/biro','\App\Http\Controllers\AdminController@acara')->name('manage');
 Route::resource('events', AdminController::class);
-Route::post('/edit-event', '\App\Http\Controllers\AdminController@editEvent')->name('calendar.editEvent');
+Route::get('/manage_peserta/biro4/{id}','\App\Http\Controllers\AdminController@peserta_acara')->name('manage.peserta');
+Route::post('/update_peserta/biro4/{id}','\App\Http\Controllers\AdminController@validasipendaftaran')->name('validasi.peserta');
+
+
+
+Route::get('/dashboard/mahasiswa','\App\Http\Controllers\MahasiswaController@index')->name('dashboard.mahasiswa');
+Route::get('/list/acara/mhs','\App\Http\Controllers\MahasiswaController@listacara')->name('acara.list.mhs');
+Route::get('/daftar_acara/mhs/{id}', '\App\Http\Controllers\MahasiswaController@daftaracara')->name('daftaracara');
+Route::post('/simpandaftaracara/mhs/{id}', '\App\Http\Controllers\MahasiswaController@simpandaftar')->name('simpandaftar');
 
 
