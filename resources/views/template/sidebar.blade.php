@@ -59,6 +59,15 @@
       </a>
 </li>
 <li class="nav-item">
+      <a href="{{route('daftaracara.mahasiswa')}}" class="nav-link {{ (request()->segment(1) == 'daftar_acara') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-calendar-alt"></i>
+        <p>
+          Daftar Acara
+
+        </p>
+      </a>
+</li>
+<li class="nav-item">
       <a href="{{route('logout')}}" class="nav-link" onclick="return confirm('Apakah Anda yakin akan logout ?')">
         <i class="nav-icon fas fa-right-from-bracket"></i>
         <p>

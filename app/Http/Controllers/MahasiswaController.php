@@ -20,7 +20,7 @@ class MahasiswaController extends Controller
             ->groupBy(function ($item) {
                 return $item->tanggal;
             });
-        return view('mahasiswa.dashboard',compact('riwayat'));
+        return view('mahasiswa.dashboard', compact('riwayat'));
     }
 
     public function listacara(Request $request)
@@ -52,12 +52,14 @@ class MahasiswaController extends Controller
         return response()->json($events);
     }
 
-    public function daftaracara($id){
+    public function formdaftaracara($id)
+    {
         $acara = Acara::find($id);
-        return view('mahasiswa.form_pendaftaran',compact('acara'));
+        return view('mahasiswa.form_pendaftaran', compact('acara'));
     }
 
-    public function simpandaftar(Request $request, $id){
+    public function simpandaftar(Request $request, $id)
+    {
         $acara = Acara::find($id);
         $user = $request->user();
 
@@ -65,22 +67,14 @@ class MahasiswaController extends Controller
         $existingRegistration = Pendaftaran_Acara::where('user_id', $user->id)
             ->where('acara_id', $acara->id)
             ->first();
-    
+
         if ($existingRegistration) {
             $sucess = array(
                 'message' => 'Anda sudah mendaftar acara ini',
                 'alert-type' => 'error'
             );
             // Pengguna sudah mendaftar, berikan pesan kesalahan atau tindakan lain.
-            return redirect('/dashboard/mahasiswa')->with($sucess);
-        }
-
-        if($acara->harga != null){
-            $pembayaran = new Pembayaran();
-            $pembayaran->user_id = $request->user()->id;
-            $pembayaran->acara_id = $acara->id;
-            $pembayaran->jumlah_pembayaran = $acara->harga;
-            $pembayaran->save();
+            return redirect('/dashboard/mhs')->with($sucess);
         }
 
         $daftar = new Pendaftaran_Acara();
@@ -88,10 +82,22 @@ class MahasiswaController extends Controller
         $daftar->acara_id = $acara->id;
         $daftar->save();
 
+        if ($acara->harga != null) {
+
+            $pembayaran = new Pembayaran();
+            $pembayaran->user_id = $request->user()->id;
+            $pembayaran->acara_id = $acara->id;
+            $pembayaran->pendaftaran_id = $daftar->id;
+            $pembayaran->jumlah_pembayaran = $acara->harga;
+            $pembayaran->save();
+        }
+
+
+
         $riwayat = new History();
         $riwayat->user_id = $request->user()->id;
         $riwayat->acara_id = $acara->id;
-        $riwayat->judul = 'Mendaftar Acara '.$acara->nama_acara;
+        $riwayat->judul = 'Mendaftar Acara ' . $acara->nama_acara;
         $riwayat->save();
 
         $sucess = array(
@@ -99,6 +105,48 @@ class MahasiswaController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect('/dashboard/mahasiswa')->with($sucess);
+        return redirect('/dashboard/mhs')->with($sucess);
+    }
+
+    public function daftaracara()
+    {
+        $acara = Pendaftaran_Acara::where('user_id', auth()->user()->id)->paginate();
+
+        return view('mahasiswa.daftar_acara', compact('acara'));
+    }
+
+    public function pembayaran(Request $request, $id)
+    {
+        // Menggunakan first() untuk mendapatkan instance model
+        $pembayaran = Pembayaran::where('pendaftaran_id', $id)->first();
+
+        if (!$pembayaran) {
+            return abort(404); // Atau tindakan lain sesuai kebutuhan jika pembayaran tidak ditemukan.
+        }
+
+        $pembayaran->tanggal_pembayaran = date("Y-m-d");
+
+        if ($request->hasFile('gambar')) {
+            $gambar = $request->file('gambar');
+            $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
+            $gambar->move(public_path('buktipembayaran'), $namaGambar);
+            $pembayaran->bukti_pembayaran = $namaGambar;
+        }
+
+        $pembayaran->save(); // Menggunakan save() pada model pembayaran.
+
+        $riwayat = new History();
+        $riwayat->user_id = $request->user()->id;
+        $riwayat->acara_id = $pembayaran->id;
+        $riwayat->judul = 'Membayar Acara ' . $pembayaran->nama_acara;
+        $riwayat->save();
+
+        $sucess = array(
+            'message' => 'Anda berhasil Membayar',
+            'alert-type' => 'success'
+        );
+
+        // Anda juga dapat menambahkan pesan sukses atau tindakan lain setelah menyimpan pembayaran.
+        return redirect()->back()->with($sucess);
     }
 }

@@ -17,12 +17,14 @@ class CreatePembayaransTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('acara_id');
-            $table->date('tanggal_pembayaran');
+            $table->unsignedBigInteger('pendaftaran_id');
+            $table->date('tanggal_pembayaran')->nullable();
             $table->integer('jumlah_pembayaran');
-            $table->string('bukti_pembayaran');
-            $table->enum('status_pembayaran', ['0', '1']);
+            $table->string('bukti_pembayaran')->nullable();
+            $table->enum('status_pembayaran', ['0', '1'])->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('acara_id')->references('id')->on('events');
+            $table->foreign('pendaftaran_id')->references('id')->on('pendaftaran_acaras');
             $table->timestamps();
         });
     }

@@ -40,7 +40,7 @@ class RegisterController extends Controller
         $input=$request->all();
         if(auth()->attempt(array('email' => $input['email'], 'password' => $input['password']))){
             if(auth()->user()->role=='Mahasiswa'){
-                return redirect('dashboard/mahasiswa');
+                return redirect('dashboard/mhs');
             }else if(auth()->user()->role=='Dosen'){
                 return redirect('dashboard/dosen');
             }else if(auth()->user()->role=='Biro 4'){
@@ -49,8 +49,6 @@ class RegisterController extends Controller
                 return redirect('dashboard/biro');
             }else if(auth()->user()->role=='Umum'){
                 return redirect('dashboard/umum');
-            }else if(auth()->user()->role=='Admin'){
-                return redirect('dashboard/admin');
             }
         }
         return redirect('/login')->with('postlogin','Username atau Password Anda Salah, Silakan lakukan proses login kembali');

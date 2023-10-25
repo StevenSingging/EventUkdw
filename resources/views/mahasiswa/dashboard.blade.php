@@ -124,7 +124,7 @@
                     '<h5>' + eventData.title + '</h5>' +
                     '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" />' + // Menampilkan gambar
                     '<p>' + deskripsi + '</p>' +
-                    '<a href="' + '{{ url('daftar_acara/mhs') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>'
+                    '<a href="' + '{{ url('form_daftar_acara/mhs') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>'
                     // Tambahkan atribut lainnya sesuai kebutuhan
                 );
 
