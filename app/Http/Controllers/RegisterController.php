@@ -46,7 +46,7 @@ class RegisterController extends Controller
             }else if(auth()->user()->role=='Biro 4'){
                 return redirect('dashboard/biro4');
             }else if(auth()->user()->role=='Biro 2'){
-                return redirect('dashboard/biro');
+                return redirect('dashboard/biro2');
             }else if(auth()->user()->role=='Umum'){
                 return redirect('dashboard/umum');
             }

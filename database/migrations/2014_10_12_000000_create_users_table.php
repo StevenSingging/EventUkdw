@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->integer('nim')->nullable();
             $table->integer('nidn')->nullable();
             $table->string('email')->unique();
-            $table->integer('nowa')->nullable();
+            $table->string('nowa',12)->nullable();
             $table->string('password');
             $table->string('role');
             $table->timestamps();

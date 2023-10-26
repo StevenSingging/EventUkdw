@@ -122,7 +122,7 @@
                 // Menampilkan data event dalam modal
                 modal.find('.modal-body').html(
                     '<h5>' + eventData.title + '</h5>' +
-                    '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" />' + // Menampilkan gambar
+                    '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px"/>' + // Menampilkan gambar
                     '<p>' + deskripsi + '</p>' +
                     '<a href="' + '{{ url('form_daftar_acara/mhs') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>'
                     // Tambahkan atribut lainnya sesuai kebutuhan

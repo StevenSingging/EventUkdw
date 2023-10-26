@@ -137,8 +137,8 @@ class MahasiswaController extends Controller
 
         $riwayat = new History();
         $riwayat->user_id = $request->user()->id;
-        $riwayat->acara_id = $pembayaran->id;
-        $riwayat->judul = 'Membayar Acara ' . $pembayaran->nama_acara;
+        $riwayat->acara_id = $pembayaran->pendaftaran->acarap->id;
+        $riwayat->judul = 'Membayar Acara ' . $pembayaran->pendaftaran->acarap->nama_acara;
         $riwayat->save();
 
         $sucess = array(

@@ -22,7 +22,7 @@
 
         </div>
         <div class="card-body">
-            <table id="peserta" class="table table-bordered table-hover">
+            <table id="acarau" class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>
@@ -69,6 +69,17 @@
                             <span class="badge badge-danger">Tidak Valid</span>
                             @endif
                         </td>
+                        <td>
+                        @if($ev->pembayaran && $ev->pembayaran->status_pembayaran == null)
+                        <span class="badge badge-warning">Dalam Progress</span>
+                        @elseif($ev->pembayaran && $ev->pembayaran->status_pembayaran == '1')
+                        <span class="badge badge-success">Valid</span>
+                        @elseif($ev->pembayaran && $ev->pembayaran->status_pembayaran == '0')
+                        <span class="badge badge-danger">Tidak Valid</span>
+                        @else
+                        <span class="badge badge-success">Gratis</span>
+                        @endif
+                        </td>
                     </tr>
                     <div class="modal fade" id="pembayaran{{$ev->id}}">
                         <div class="modal-dialog">
@@ -112,4 +123,21 @@
         </div>
     </div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+
+<script>
+    $(function() {
+        $('#acarau').DataTable({
+            "dom": '<"top"i>rt<"bottom"p><"clear">',
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true,
+            "pageLength": 10,
+        });
+    });
+</script>
 @endsection

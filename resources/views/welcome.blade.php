@@ -46,16 +46,16 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+      
     }
 
-    .card {
+    .card-custom {
       margin-top: 10px;
-      margin-right: 1px;
       /* spacing between cards */
       margin-bottom: 20px;
       /* spacing between rows */
+      width: calc(33.33% - 20px);
     }
-
   </style>
 </head>
 
@@ -83,13 +83,13 @@
   <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="height: 50%; width:100%">
     <div class="carousel-inner">
       <div class="carousel-item active">
-        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" alt="First slide">
+        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" style="height: 50%; width:100%" alt="First slide">
       </div>
       <div class="carousel-item">
-        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" alt="Second slide">
+        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" style="height: 50%; width:100%" alt="Second slide">
       </div>
       <div class="carousel-item">
-        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" alt="Third slide">
+        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" style="height: 50%; width:100%" alt="Third slide">
       </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -104,42 +104,20 @@
   <div class="container">
     <h1 class="fancy">Event Terbaru</h1>
     <div class="card-deck">
-      @foreach($event as $ev)
-      @if($count % 3 == 0)
-      @if($count != 0)
-    </div>
-    @endif
-    <div class="row">
-      @endif
-      <div class="col-md-4">
-        <div class="card">
-          <img class="card-img-top" src="{{ asset('fotoacara/'.$ev->gambar)}}" alt="{{$ev->gambar}}">
-          <div class="card-body">
-            <h5 class="card-title text-center">{{$ev->nama_acara}}</h5>
-            <!-- <p class="card-text">{{date('d F Y', strtotime($ev->waktu_mulai))}} - {{date('d F Y', strtotime($ev->waktu_selesai))}} <br>
-              {{date('H i', strtotime($ev->waktu_mulai))}} - {{date('H i', strtotime($ev->waktu_selesai))}}<br>
-              Batas Pendafaran : {{date('d F Y', strtotime($ev->batas_pendaftaran))}} <br>
-              @if($ev->harga == null)
-              Harga : Gratis <br>
-              @else
-              Harga : Rp. {{$ev->harga}} <br>
-              @endif
-              Lokasi : {{$ev->lokasi}} <br>
-              Terbuka Untuk : {{$ev->terbuka_untuk}}
-            </p> -->
-            <p class="card-text">{{$ev->deskripsi}}</p>
-          </div>
-          <div class="card-footer">
-            <a href="/login" class="btn btn-primary">Daftar Sekarang</a>
-          </div>
+    @foreach($event as $ev)
+      <div class="card-custom">
+        <img class="card-img-top" src="{{ asset('fotoacara/'.$ev->gambar)}}" style="height:50%" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">{{$ev->nama_acara}}</h5>
+          <p class="card-text">{{$ev->deskripsi}}</p>
+          <a href="/login" class="btn btn-primary">Daftar Sekarang</a>
+          <p class="card-text"><small class="text-muted">Last updated {{ $ev->updated_at->diffForHumans() }}</small></p>
         </div>
       </div>
-      @endforeach
+    @endforeach
     </div>
   </div>
 
-
-  </div>
 
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

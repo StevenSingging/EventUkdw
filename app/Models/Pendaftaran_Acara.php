@@ -16,4 +16,7 @@ class Pendaftaran_Acara extends Model
     public function userp(){
         return $this->belongsTo(User::class,'user_id','id');
     }
+    public function pembayaran(){
+        return $this->hasOne(Pembayaran::class, 'pendaftaran_id');
+    }
 }

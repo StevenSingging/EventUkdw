@@ -39,10 +39,19 @@
 @endif
 @if(auth()->user()->role == "Biro 2")
 <li class="nav-item">
-      <a href="{{route('dashboard.admin')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
+      <a href="{{route('dashboard.biro2')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
           Dashboard
+
+        </p>
+      </a>
+</li>
+<li class="nav-item">
+      <a href="{{route('logout')}}" class="nav-link" onclick="return confirm('Apakah Anda yakin akan logout ?')">
+        <i class="nav-icon fas fa-right-from-bracket"></i>
+        <p>
+          Logout
 
         </p>
       </a>

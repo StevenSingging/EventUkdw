@@ -10,7 +10,12 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="">Beranda</a></li>
+                    @if($nama_acara == null)
+                    <li class="breadcrumb-item active">Peserta Acara</li>
+                    @else
                     <li class="breadcrumb-item active">Peserta Acara {{$nama_acara->acarap->nama_acara}}</li>
+                    @endif
+                    
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->

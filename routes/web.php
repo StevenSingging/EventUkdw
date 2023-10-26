@@ -38,6 +38,10 @@ Route::post('/postlogin','\App\Http\Controllers\RegisterController@postlogin')->
 Route::get('/logout','\App\Http\Controllers\RegisterController@logout')->name('logout');
 Route::get('/','\App\Http\Controllers\AdminController@home')->name('home');
 
+Route::group(['middleware' => ['auth','cekrole:Biro 2']],function(){
+    Route::get('/dashboard/biro2','\App\Http\Controllers\AdminController@dashboardb2')->name('dashboard.biro2');
+
+});  
 
 Route::group(['middleware' => ['auth','cekrole:Biro 4']],function(){
     Route::get('/dashboard/biro4','\App\Http\Controllers\AdminController@index')->name('dashboard.admin');

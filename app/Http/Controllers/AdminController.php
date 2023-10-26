@@ -130,7 +130,7 @@ class AdminController extends Controller
 
     public function home()
     {
-        $event = Acara::take(6)->get();
+        $event = Acara::latest()->take(6)->get();
         $count = Acara::count();
         return view('welcome', compact('event', 'count'));
     }

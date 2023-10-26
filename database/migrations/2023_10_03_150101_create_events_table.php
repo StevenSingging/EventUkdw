@@ -23,7 +23,7 @@ class CreateEventsTable extends Migration
             $table->dateTime('waktu_selesai');
             $table->string('lokasi');
             $table->integer('harga')->nullable();
-            $table->dateTime('batas pendaftaran');
+            $table->dateTime('batas_pendaftaran');
             $table->string('gambar');
             $table->string('terbuka_untuk');
             $table->timestamps();
