@@ -165,10 +165,8 @@ class AdminController extends Controller
             if ($status === '1') {
                 if ($peserta->acarap->harga != null) {
                     $history->judul = 'Status Pendaftaran Acara ' . $peserta->acarap->nama_acara . ' Anda Telah Diubah Menjadi Valid Silahkan Melakukan Pembayaran';
-
                 } else {
                     $history->judul = 'Status Pendaftaran Acara ' . $peserta->acarap->nama_acara . ' Anda Telah Diubah Menjadi Valid';
-
                 }
             } elseif ($status === '0') {
                 $history->judul = 'Status Pendaftaran Acara ' . $peserta->acarap->nama_acara . ' Anda Telah Diubah Menjadi Tidak Valid';
@@ -185,6 +183,46 @@ class AdminController extends Controller
 
     public function dashboardb2()
     {
-        return view('biro2.dashboard');
+        $event = Acara::wherenotNull('harga')->paginate();
+        return view('biro2.dashboard', compact('event'));
+    }
+
+    public function peserta_acara_biro2($id)
+    {
+        $pembayaran = Pendaftaran_Acara::where('acara_id', $id)->first();
+        $peserta = Pendaftaran_Acara::where('acara_id', $id)
+            ->has('pembayaran') // hanya peserta dengan pembayaran
+            ->paginate();
+
+        //dd($nama_acara);
+        return view('biro2.validasipembayaran', compact('peserta', 'pembayaran'));
+    }
+
+    public function updatepembayaran(Request $request, $id)
+    {
+        $pembayaran = Pendaftaran_Acara::find($id);
+        $status = $request->input('status');
+        $history = new History();
+        // Validasi status yang diterima
+        if ($status === '0' || $status === '1') {
+            $pembayaran->pembayaran->status_pembayaran = $request->status;
+            $pembayaran->pembayaran->save();
+
+            $history->user_id = $pembayaran->user_id;
+            $history->acara_id = $pembayaran->acara_id;
+            if ($status === '1') {
+                $history->judul = 'Status Pembayaran Acara ' . $pembayaran->acarap->nama_acara . ' Anda Telah Diubah Menjadi Valid';
+
+            } elseif ($status === '0') {
+                $history->judul = 'Status Pembayaran Acara ' . $pembayaran->acarap->nama_acara . ' Anda Telah Diubah Menjadi Tidak Valid';
+            }
+            $history->save();
+
+
+            return redirect()->back()->with('sucess', ' data berhasil');
+        } else {
+            // Tambahkan penanganan kesalahan jika status tidak valid
+            return redirect()->back()->with('error', ' ');
+        }
     }
 }

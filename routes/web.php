@@ -40,6 +40,9 @@ Route::get('/','\App\Http\Controllers\AdminController@home')->name('home');
 
 Route::group(['middleware' => ['auth','cekrole:Biro 2']],function(){
     Route::get('/dashboard/biro2','\App\Http\Controllers\AdminController@dashboardb2')->name('dashboard.biro2');
+    Route::get('/validasipembayaran/biro2/{id}','\App\Http\Controllers\AdminController@peserta_acara_biro2')->name('peserta.acara');
+    Route::post('/update_pembayaran/biro2/{id}','\App\Http\Controllers\AdminController@updatepembayaran')->name('validasi.pembayaran');
+
 
 });  
 

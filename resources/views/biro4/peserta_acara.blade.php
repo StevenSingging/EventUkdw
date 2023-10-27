@@ -75,4 +75,20 @@
         </div>
     </div>
 </div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script>
+    $(function() {
+        $('#peserta').DataTable({
+            "dom": '<"top"i>rt<"bottom"p><"clear">',
+            "paging": true,
+            "lengthChange": true,
+            "searching": false,
+            "ordering": true,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true,
+            "pageLength": 10,
+        });
+    });
+</script>
 @endsection

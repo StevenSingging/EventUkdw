@@ -88,33 +88,34 @@
                         No
                     </th>
                     <th>
-                       Jenis Acara
-                    </th>
-                    <th >
-                        Nama
+                        Jenis Acara
                     </th>
                     <th>
-                        Deskripsi
+                        Nama Acara
                     </th>
                     <th>
-                        Waktu
+                        Tanggal
                     </th>
                     <th>
-                        Gambar
+                        Terbuka Untuk
                     </th>
                     <th>
-                        Status
+                        Peserta
                     </th>
                 </tr>
             </thead>
             <tbody>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
-                <td>1</td>
+                @php $no = 1; @endphp
+                @foreach($event as $evt)
+                <tr>
+                    <td scope="row">{{ $no++ + ($event->currentPage() - 1) * $event->perPage() }}</td>
+                    <td>{{ $evt->jenis_acara }}</td>
+                    <td>{{ $evt->nama_acara }}</td>
+                    <td>{{ date('d F Y', strtotime($evt->waktu_mulai)) }} - {{ date('d F Y', strtotime($evt->waktu_selesai)) }}</td>
+                    <td>{{ $evt->terbuka_untuk }}</td>
+                    <td> <a class="btn btn-primary" href="{{route('peserta.acara',$evt->id)}}" role="button">Lihat Peserta</a>
+                </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -126,9 +127,9 @@
             "dom": '<"top"i>rt<"bottom"p><"clear">',
             "paging": true,
             "lengthChange": true,
-            "searching": true,
+            "searching": false,
             "ordering": true,
-            "info": true,
+            "info": false,
             "autoWidth": false,
             "responsive": true,
             "pageLength": 10,
