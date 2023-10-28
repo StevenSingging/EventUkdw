@@ -13,7 +13,7 @@
                     @if($nama_acara == null)
                     <li class="breadcrumb-item active">Peserta Acara</li>
                     @else
-                    <li class="breadcrumb-item active">Peserta Acara {{$nama_acara->acarap->nama_acara}}</li>
+                    <li class="breadcrumb-item active">Peserta Acara {{$nama_acara->nama_acara}}</li>
                     @endif
                     
                 </ol>
@@ -24,6 +24,7 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-body">
+        <a class="btn btn-info" role="button" href="{{route('cetak.peserta',$nama_acara->id)}}"><span class="fa-solid fa-print" aria-hidden="true"></span></a>
             <table id="peserta" class="table table-bordered table-hover">
                 <thead>
                     <tr>
@@ -64,8 +65,8 @@
                         <td>
                             <form action="{{ route('validasi.peserta', $pst->id) }}" method="post">
                                 @csrf
-                                <button class="btn btn-success" name="status" value="1" type="submit">Valid</button>
-                                <button class="btn btn-danger" name="status" value="0" type="submit">Unvalid</button>
+                                <button class="btn btn-success" name="status" value="1" type="submit"><span class="fa-solid fa-check" aria-hidden="true"></span></button>
+                                <button class="btn btn-danger" name="status" value="0" type="submit"><span class="fa-solid fa-xmark" aria-hidden="true"></span></button>
                             </form>
                         </td>
                     </tr>
@@ -82,7 +83,7 @@
             "dom": '<"top"i>rt<"bottom"p><"clear">',
             "paging": true,
             "lengthChange": true,
-            "searching": false,
+            "searching": true,
             "ordering": true,
             "info": false,
             "autoWidth": false,

@@ -54,8 +54,8 @@
                     <td>{{ $pst->userp->nama }}</td>
                     <td>{{ $pst->userp->role }}</td>
                     <td>{{ date('d F Y', strtotime($pst->pembayaran->tanggal_pembayaran)) }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bukti{{$pst->id}}"><i class="fa-solid fa-magnifying-glass-dollar"></i></button>
+                    <td align="center">
+                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#bukti{{$pst->id}}"><span class="fa-solid fa-magnifying-glass-dollar" aria-hidden="true"></span></button>
                     </td>
                     <td>
                         @if($pst->pembayaran->status_pembayaran == null)
@@ -69,8 +69,8 @@
                     <td>
                         <form action="{{route('validasi.pembayaran',$pst->id)}}" method="post">
                             @csrf
-                            <button class="btn btn-success btn-sm" name="status" value="1" type="submit" ><i class="fa-solid fa-check"></i> Valid</button>
-                            <button class="btn btn-danger btn-sm" name="status" value="0" type="submit"><i class="fa-solid fa-xmark"></i> Unvalid</button>
+                            <button class="btn btn-success" name="status" value="1" type="submit"><span class="fa-solid fa-check" aria-hidden="true"></span></button>
+                            <button class="btn btn-danger" name="status" value="0" type="submit"><span class="fa-solid fa-xmark" aria-hidden="true"></span></button>
                         </form>
                     </td>
                 </tr>
@@ -84,7 +84,7 @@
                                 </button>
                             </div>
                             <div class="modal-body">
-                            <img src="{{asset('buktipembayaran/'. $pst->pembayaran->bukti_pembayaran)}}" style="display:block; margin-left:auto; margin-right:auto; width:100%; margin-bottom:5px" alt="">
+                                <img src="{{asset('buktipembayaran/'. $pst->pembayaran->bukti_pembayaran)}}" style="display:block; margin-left:auto; margin-right:auto; width:100%; margin-bottom:5px" alt="">
 
                             </div>
                         </div>

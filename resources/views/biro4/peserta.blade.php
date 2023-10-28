@@ -51,9 +51,11 @@
                         <td>{{ $evt->nama_acara }}</td>
                         <td>{{ date('d F Y', strtotime($evt->waktu_mulai)) }} - {{ date('d F Y', strtotime($evt->waktu_selesai)) }}</td>
                         <td>{{ $evt->terbuka_untuk }}</td>
-                        <td> <a class="btn btn-primary" href="{{route('manage.peserta',$evt->id)}}" role="button">Lihat Peserta</a>
+                        <td>
+                            <a class="btn btn-info" role="button" href="{{route('manage.peserta',$evt->id)}}"><span class="fa-solid fa-users-viewfinder" aria-hidden="true"></span></a>
+                        </td>
                     </tr>
-                    </td>
+
                     @endforeach
                 </tbody>
             </table>

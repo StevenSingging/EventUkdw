@@ -8,6 +8,9 @@ use App\Http\Requests\EventRequest;
 use App\Models\History;
 use App\Models\Pendaftaran_Acara;
 use App\Models\Pembayaran;
+use PDF;
+
+
 
 class AdminController extends Controller
 {
@@ -145,7 +148,7 @@ class AdminController extends Controller
     public function peserta_acara($id)
     {
         $peserta = Pendaftaran_Acara::where('acara_id', $id)->paginate();
-        $nama_acara = Pendaftaran_Acara::where('acara_id', $id)->first();
+        $nama_acara = Acara::where('id', $id)->first();
         //dd($nama_acara);
         return view('biro4.peserta_acara', compact('peserta', 'nama_acara'));
     }
@@ -224,5 +227,12 @@ class AdminController extends Controller
             // Tambahkan penanganan kesalahan jika status tidak valid
             return redirect()->back()->with('error', ' ');
         }
+    }
+
+    public function cetakpeserta($id){
+        $acara = Acara::find($id);
+        $data = $acara->acarap->where('status', 1);
+        $pdf = PDF::loadView('biro4.download_peserta', ['data' => $data]);
+        return $pdf->download('peserta_acara_'.$acara->nama_acara.'.pdf');
     }
 }
