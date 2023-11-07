@@ -59,13 +59,13 @@
 
                         </td>
                         <td>
-                            @if($ev->acarap->harga == null)
+                            @if($ev->acarap->harga_mhs == null)
                             <span class="badge badge-success">Gratis</span>
-                            @elseif($ev->acarap->harga != null && $ev->status == null)
+                            @elseif($ev->acarap->harga_mhs != null && $ev->status == null)
                             <span class="badge badge-warning">Dalam Progress</span>
-                            @elseif($ev->acarap->harga != null && $ev->status == '1')
+                            @elseif($ev->acarap->harga_mhs != null && $ev->status == '1')
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pembayaran{{$ev->id}}">Bayar Disini</button>
-                            @elseif($ev->acarap->harga != null && $ev->status == '0')
+                            @elseif($ev->acarap->harga_mhs != null && $ev->status == '0')
                             <span class="badge badge-danger">Tidak Valid</span>
                             @endif
                         </td>
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <img src="{{asset('AdminLTE-3.2.0/dist/img/qris.jpg')}}" style="display:block; margin-left:auto; margin-right:auto; width:50%; margin-bottom:5px" alt="">
-                                        <p>Biaya Pendaftaran : Rp. {{ number_format($ev->acarap->harga, 2, ',', '.') }}</p>
+                                        <p>Biaya Pendaftaran : Rp. {{ number_format($ev->acarap->harga_mhs, 2, ',', '.') }}</p>
 
                                         <div class="form-group">
                                             <label for="exampleInputFile">Upload Bukti Bayar</label>

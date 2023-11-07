@@ -112,7 +112,14 @@
                     <td>{{ $evt->jenis_acara }}</td>
                     <td>{{ $evt->nama_acara }}</td>
                     <td>{{ date('d F Y', strtotime($evt->waktu_mulai)) }} - {{ date('d F Y', strtotime($evt->waktu_selesai)) }}</td>
-                    <td>{{ $evt->terbuka_untuk }}</td>
+                    <td> 
+                        @foreach(json_decode($evt->terbuka_untuk) as $key => $item)
+                            {{ $item }}
+                            @if ($key < count(json_decode($evt->terbuka_untuk)) - 1) 
+                            , <!-- Tambahkan koma jika ini bukan elemen terakhir -->
+                            @endif
+                            @endforeach
+                    </td>
                     <td> <a class="btn btn-info" role="button" href="{{route('peserta.acara',$evt->id)}}"><span class="fa-solid fa-users-viewfinder" aria-hidden="true"></span></a></td>
                     
 

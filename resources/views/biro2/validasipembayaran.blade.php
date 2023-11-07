@@ -55,7 +55,7 @@
                     <td>{{ $pst->userp->role }}</td>
                     <td>{{ date('d F Y', strtotime($pst->pembayaran->tanggal_pembayaran)) }}</td>
                     <td align="center">
-                        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#bukti{{$pst->id}}"><span class="fa-solid fa-magnifying-glass-dollar" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#bukti{{$pst->id}}"><span class="fa-solid fa-magnifying-glass-dollar" aria-hidden="true"></span></button>
                     </td>
                     <td>
                         @if($pst->pembayaran->status_pembayaran == null)
@@ -69,8 +69,8 @@
                     <td>
                         <form action="{{route('validasi.pembayaran',$pst->id)}}" method="post">
                             @csrf
-                            <button class="btn btn-success" name="status" value="1" type="submit"><span class="fa-solid fa-check" aria-hidden="true"></span></button>
-                            <button class="btn btn-danger" name="status" value="0" type="submit"><span class="fa-solid fa-xmark" aria-hidden="true"></span></button>
+                            <button class="btn btn-success btn-sm" name="status" value="1" type="submit"><span class="fa-solid fa-check" aria-hidden="true"></span></button>
+                            <button class="btn btn-danger btn-sm" name="status" value="0" type="submit"><span class="fa-solid fa-xmark" aria-hidden="true"></span></button>
                         </form>
                     </td>
                 </tr>

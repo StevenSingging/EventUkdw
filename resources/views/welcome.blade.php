@@ -108,9 +108,8 @@
       <div class="card-custom">
         <img class="card-img-top" src="{{ asset('fotoacara/'.$ev->gambar)}}" style="height:50%" alt="Card image cap">
         <div class="card-body">
-          <h5 class="card-title">{{$ev->nama_acara}}</h5>
-          <p class="card-text">{{$ev->deskripsi}}</p>
-          <a href="/login" class="btn btn-primary">Daftar Sekarang</a>
+          <a href="{{route('lihatacara',$ev->id)}}" class="card-title h5" >{{$ev->nama_acara}}</a>
+          <p class="card-text" style="margin-top: 10px;">{{$ev->deskripsi}}</p>
           <p class="card-text"><small class="text-muted">Last updated {{ $ev->updated_at->diffForHumans() }}</small></p>
         </div>
       </div>

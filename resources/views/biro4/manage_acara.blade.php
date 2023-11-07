@@ -2,7 +2,11 @@
 <title>Dashboard</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+<style>
+    .fc-event-time {
+        display: none;
+    }
+</style>
 @section('content')
 <div class="content-header">
     <div class="container-fluid">
@@ -61,9 +65,17 @@
                             <label for="exampleInputPassword1">Lokasi Acara</label>
                             <input type="text" class="form-control" name="lokasi" placeholder="Lokasi Acara">
                         </div>
-                        <div class="form-group">
-                            <label for="exampleInputPassword1">Harga</label>
-                            <input type="number" class="form-control" name="harga" placeholder="Harga">
+                        <div class="form-group" id="hargaInputmhs" style="display: none;">
+                            <label for="">Harga Mahasiswa</label>
+                            <input type="number" class="form-control" name="harga_mhs">
+                        </div>
+                        <div class="form-group" id="hargaInputdsn" style="display: none;">
+                            <label for="">Harga Dosen</label>
+                            <input type="number" class="form-control" name="harga_dosen">
+                        </div>
+                        <div class="form-group" id="hargaInputumum" style="display: none;">
+                            <label for="">Harga Umum</label>
+                            <input type="number" class="form-control" name="harga_umum">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Batas Pendaftaran</label>
@@ -79,14 +91,27 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Terbuka Untuk</label>
-                            <select class="custom-select" name="terbuka_untuk">
-                                <option selected>Choose...</option>
-                                <option value="Mahasiswa">Mahasiswa</option>
-                                <option value="Dosen">Dosen</option>
-                                <option value="Umum">Umum</option>
-                            </select>
+                            <label for="">Terbuka Untuk</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Mahasiswa" name="terbuka_untuk[]" id="chkMahasiswa">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Mahasiswa
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Dosen" name="terbuka_untuk[]" id="chkDosen">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Dosen
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Umum" name="terbuka_untuk[]" id="chkUmum">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Umum
+                                </label>
+                            </div>
                         </div>
+                        
 
                         <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -109,8 +134,8 @@
         </div>
         <div class="modal fade" id="modal-action"></div>
 
-        </div>
     </div>
+</div>
 
 </div>
 
@@ -129,14 +154,16 @@
             headerToolbar: {
                 left: 'prev,next',
                 center: 'title',
-                right: 'dayGridMonth,listWeek,listDay' // user can switch between the two
+                right: 'dayGridMonth,dayGridWeek' // user can switch between the two
             },
             themeSystem: 'bootstrap5',
             events: "{{ route('acara.list') }}",
-            eventClick: function ({event}) {
+            eventClick: function({
+                event
+            }) {
                 $.ajax({
                     url: `{{ url('events') }}/${event.id}/edit`,
-                    success: function (res) {
+                    success: function(res) {
                         modal.html(res).modal('show')
 
                         $('#form-action').on('submit', function(e) {
@@ -149,7 +176,7 @@
                                 data: formData,
                                 processData: false,
                                 contentType: false,
-                                success: function (res) {
+                                success: function(res) {
                                     modal.modal('hide')
                                     calendar.refetchEvents()
                                 }
@@ -158,7 +185,7 @@
                     }
                 })
             },
-            eventDrop: function (info) {
+            eventDrop: function(info) {
                 const event = info.event
                 $.ajax({
                     url: `{{ url('events') }}/${event.id}`,
@@ -174,14 +201,14 @@
                         'X-CSRF-TOKEN': csrfToken,
                         accept: 'application/json'
                     },
-                    success: function (res) {
+                    success: function(res) {
                         iziToast.success({
                             title: 'Success',
                             message: res.message,
                             position: 'topRight'
                         });
                     },
-                    error: function (res) {
+                    error: function(res) {
                         const message = res.responseJSON.message
                         info.revert()
                         iziToast.error({
@@ -197,5 +224,27 @@
         calendar.render();
     });
 </script>
+<script>
+    // Ambil elemen checkbox
+    var chkMahasiswa = document.getElementById('chkMahasiswa');
+    var chkDosen = document.getElementById('chkDosen');
+    var chkUmum = document.getElementById('chkUmum');
 
+    // Ambil elemen input harga
+    var hargaInputdsn = document.getElementById('hargaInputdsn');
+    var hargaInputmhs = document.getElementById('hargaInputmhs');
+    var hargaInputumum = document.getElementById('hargaInputumum');
+
+
+    // Tambahkan event listener saat checkbox berubah
+    chkMahasiswa.addEventListener('change', toggleHargaInput);
+    chkDosen.addEventListener('change', toggleHargaInput);
+    chkUmum.addEventListener('change', toggleHargaInput);
+
+    function toggleHargaInput() {
+        hargaInputmhs.style.display = chkMahasiswa.checked ? 'block' : 'none';
+        hargaInputdsn.style.display = chkDosen.checked ? 'block' : 'none';
+        hargaInputumum.style.display = chkUmum.checked ? 'block' : 'none';
+    }
+</script>
 @endsection

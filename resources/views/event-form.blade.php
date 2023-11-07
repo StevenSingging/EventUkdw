@@ -33,9 +33,17 @@
         <label for="exampleInputPassword1">Lokasi Acara</label>
         <input type="text" class="form-control" name="lokasi" value="{{ $data->lokasi }}" placeholder="Lokasi Acara">
     </div>
-    <div class="form-group">
-        <label for="exampleInputPassword1">Harga</label>
-        <input type="number" class="form-control" name="harga" value="{{ $data->harga }}" placeholder="Harga">
+    <div class="form-group" id="hargaInputmhs">
+        <label for="exampleInputPassword1">Harga Mahasiswa</label>
+        <input type="number" class="form-control" name="harga_mhs"   value="{{ $data->harga_mhs }}" placeholder="Harga Mahasiswa">
+    </div>
+    <div class="form-group" id="hargaInputdsn">
+        <label for="exampleInputPassword1">Harga Dosen</label>
+        <input type="number" class="form-control" name="harga_dosen" value="{{ $data->harga_dosen }}" placeholder="Harga Dosen">
+    </div>
+    <div class="form-group" id="hargaInputumum">
+        <label for="exampleInputPassword1">Harga Umum</label>
+        <input type="number" class="form-control" name="harga_umum"  value="{{ $data->harga_umum }}" placeholder="Harga Umum">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Batas Pendaftaran</label>
@@ -50,14 +58,29 @@
             </div>
         </div>
     </div>
+    @php
+    $tbk = json_decode($data->terbuka_untuk);
+    @endphp
     <div class="form-group">
-        <label for="exampleInputEmail1">Terbuka Untuk</label>
-        <select class="custom-select" name="terbuka_untuk">
-            <option selected>Choose...</option>
-            <option value="Mahasiswa" {{ $data->terbuka_untuk === 'Mahasiswa' ? 'selected' : '' }}>Mahasiswa</option>
-            <option value="Dosen" {{ $data->terbuka_untuk === 'Dosen' ? 'selected' : '' }}>Dosen</option>
-            <option value="Umum" {{ $data->terbuka_untuk === 'Umum' ? 'selected' : '' }}>Umum</option>
-        </select>
+        <label for="">Terbuka Untuk</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Mahasiswa" name="terbuka_untuk[]" id="chkMahasiswa" @if (in_array('Mahasiswa', $tbk)) checked @endif>
+            <label class="form-check-label" for="flexCheckDefault">
+                Mahasiswa
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Dosen" name="terbuka_untuk[]" id="chkDosen" @if (in_array('Dosen', $tbk)) checked @endif>
+            <label class="form-check-label" for="flexCheckDefault">
+                Dosen
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Umum" name="terbuka_untuk[]" id="chkUmum" @if (in_array('Umum', $tbk)) checked @endif>
+            <label class="form-check-label" for="flexCheckDefault">
+                Umum
+            </label>
+        </div>
     </div>
     <div class="row">
         <div class="col-12">
@@ -69,4 +92,27 @@
             </div>
         </div>
     </div>
+    <script>
+    // Ambil elemen checkbox
+    var chkMahasiswa = document.getElementById('chkMahasiswa');
+    var chkDosen = document.getElementById('chkDosen');
+    var chkUmum = document.getElementById('chkUmum');
+
+    // Ambil elemen input harga
+    var hargaInputdsn = document.getElementById('hargaInputdsn');
+    var hargaInputmhs = document.getElementById('hargaInputmhs');
+    var hargaInputumum = document.getElementById('hargaInputumum');
+
+
+    // Tambahkan event listener saat checkbox berubah
+    chkMahasiswa.addEventListener('change', toggleHargaInput);
+    chkDosen.addEventListener('change', toggleHargaInput);
+    chkUmum.addEventListener('change', toggleHargaInput);
+
+    function toggleHargaInput() {
+            hargaInputmhs.disabled = !chkMahasiswa.checked;
+            hargaInputdsn.disabled = !chkDosen.checked;
+            hargaInputumum.disabled = !chkUmum.checked;
+    }
+</script>
 </x-modal-action>

@@ -29,25 +29,29 @@ class MahasiswaController extends Controller
         $end = date('YYYY-MM-DD ', strtotime($request->waktu_selesai));
         // $events = Acara::where('waktu_mulai','>=',$start)->orWhere('waktu_selesai','<=',$end)->orWhere('terbuka_untuk','Mahasiswa')->orWhere('terbuka_untuk','Umum')->get()
 
-        $events = Acara::where('waktu_mulai', '>=', $start)
-            ->orwhere('waktu_selesai', '<=', $end)
-            ->whereIn('terbuka_untuk', ['Mahasiswa', 'Umum'])
-            ->get()
-            ->map(fn ($item) => [
-                'id' => $item->id,
-                'jenis_acara' => $item->jenis_acara,
-                'title' => $item->nama_acara,
-                'start' => $item->waktu_mulai,
-                'end' => $item->waktu_selesai,
-                'color' => $item->warna,
-                'deskripsi' => $item->deskripsi,
-                'lokasi' => $item->lokasi,
-                'harga' => $item->harga,
-                'batas_pendaftaran' => $item->batas_pendaftaran,
-                'gambar' => $item->gambar,
-                'terbuka_untuk' => $item->terbuka_untuk
+        $acara = Acara::all();
+        $events = [];
 
-            ]);
+        foreach ($acara as $a) {
+            $terbuka_untuk = json_decode($a->terbuka_untuk);
+
+            if (in_array('Mahasiswa', $terbuka_untuk) || in_array('Umum', $terbuka_untuk)) {
+                $events[] = [
+                    'id' => $a->id,
+                    'jenis_acara' => $a->jenis_acara,
+                    'title' => $a->nama_acara,
+                    'start' => $a->waktu_mulai,
+                    'end' => $a->waktu_selesai,
+                    'color' => $a->warna,
+                    'deskripsi' => $a->deskripsi,
+                    'lokasi' => $a->lokasi,
+                    'harga' => $a->harga,
+                    'batas_pendaftaran' => $a->batas_pendaftaran,
+                    'gambar' => $a->gambar,
+                    'terbuka_untuk' => $a->terbuka_untuk,
+                ];
+            }
+        }
 
         return response()->json($events);
     }
@@ -82,13 +86,13 @@ class MahasiswaController extends Controller
         $daftar->acara_id = $acara->id;
         $daftar->save();
 
-        if ($acara->harga != null) {
+        if ($acara->harga_mhs != null) {
 
             $pembayaran = new Pembayaran();
             $pembayaran->user_id = $request->user()->id;
             $pembayaran->acara_id = $acara->id;
             $pembayaran->pendaftaran_id = $daftar->id;
-            $pembayaran->jumlah_pembayaran = $acara->harga;
+            $pembayaran->jumlah_pembayaran = $acara->harga_mhs;
             $pembayaran->save();
         }
 

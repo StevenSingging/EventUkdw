@@ -43,7 +43,9 @@ class AdminController extends Controller
                 'color' => $item->warna,
                 'deskripsi' => $item->deskripsi,
                 'lokasi' => $item->lokasi,
-                'harga' => $item->harga,
+                'harga_dosen' => $item->harga_dosen,
+                'harga_mhs' => $item->harga_mhs,
+                'harga_umum' => $item->harga_umum,
                 'batas_pendaftaran' => $item->batas_pendaftaran,
                 'gambar' => $item->gambar,
                 'terbuka_untuk' => $item->terbuka_untuk
@@ -55,25 +57,38 @@ class AdminController extends Controller
 
     public function simpanacara(Request $request, Acara $event)
     {
-
-        $event->jenis_acara = $request->jenis_acara;
-        $event->nama_acara = $request->nama_acara;
-        $event->warna = $request->warna;
-        $event->deskripsi = $request->deskripsi;
-        $event->waktu_mulai = $request->waktu_mulai;
-        $event->waktu_selesai = $request->waktu_selesai;
-        $event->lokasi = $request->lokasi;
-        $event->harga = $request->harga;
-        $event->batas_pendaftaran = $request->batas_pendaftaran;
-        $event->terbuka_untuk = $request->terbuka_untuk;
-        if ($request->hasFile('gambar')) {
-            $gambar = $request->file('gambar');
-            $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
-            $gambar->move(public_path('fotoacara'), $namaGambar);
-            $event->gambar = $namaGambar;
+        if (!empty($request->input('terbuka_untuk'))) {
+            $event->jenis_acara = $request->jenis_acara;
+            $event->nama_acara = $request->nama_acara;
+            $event->warna = $request->warna;
+            $event->deskripsi = $request->deskripsi;
+            $event->waktu_mulai = $request->waktu_mulai;
+            $event->waktu_selesai = $request->waktu_selesai;
+            $event->lokasi = $request->lokasi;
+            $event->harga_dosen = $request->harga_dosen;
+            $event->harga_umum = $request->harga_umum;
+            $event->harga_mhs = $request->harga_mhs;
+            $event->batas_pendaftaran = $request->batas_pendaftaran;
+            $event->terbuka_untuk = json_encode($request->input('terbuka_untuk'));
+            if ($request->hasFile('gambar')) {
+                $gambar = $request->file('gambar');
+                $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
+                $gambar->move(public_path('fotoacara'), $namaGambar);
+                $event->gambar = $namaGambar;
+            }
+            $event->save();
+            $sucess = array(
+                'message' => 'Anda sudah membuat acara',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($sucess);
+        } else {
+            $sucess = array(
+                'message' => 'Anda gagal membuat acara',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($sucess);
         }
-        $event->save();
-        return redirect()->back();
     }
 
     public function create(Acara $event)
@@ -97,30 +112,32 @@ class AdminController extends Controller
         if ($request->has('delete')) {
             return $this->destroy($event);
         }
+        if (!empty($request->input('terbuka_untuk'))) {
+            $event->jenis_acara = $request->jenis_acara;
+            $event->nama_acara = $request->nama_acara;
+            $event->warna = $request->warna;
+            $event->deskripsi = $request->deskripsi;
+            $event->waktu_mulai = $request->waktu_mulai;
+            $event->waktu_selesai = $request->waktu_selesai;
+            $event->lokasi = $request->lokasi;
+            $event->harga_dosen = $request->harga_dosen;
+            $event->harga_umum = $request->harga_umum;
+            $event->harga_mhs = $request->harga_mhs;
+            $event->batas_pendaftaran = $request->batas_pendaftaran;
+            $event->terbuka_untuk = json_encode($request->input('terbuka_untuk'));
+            if ($request->hasFile('gambar')) {
+                $gambar = $request->file('gambar');
+                $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
+                $gambar->move(public_path('fotoacara'), $namaGambar);
+                $event->gambar = $namaGambar;
+            }
+            $event->save();
 
-        $event->jenis_acara = $request->jenis_acara;
-        $event->nama_acara = $request->nama_acara;
-        $event->warna = $request->warna;
-        $event->deskripsi = $request->deskripsi;
-        $event->waktu_mulai = $request->waktu_mulai;
-        $event->waktu_selesai = $request->waktu_selesai;
-        $event->lokasi = $request->lokasi;
-        $event->harga = $request->harga;
-        $event->batas_pendaftaran = $request->batas_pendaftaran;
-        $event->terbuka_untuk = $request->terbuka_untuk;
-        if ($request->hasFile('gambar')) {
-            $gambar = $request->file('gambar');
-            $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
-            $gambar->move(public_path('fotoacara'), $namaGambar);
-            $event->gambar = $namaGambar;
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Save data successfully'
+            ]);
         }
-
-        $event->save();
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Save data successfully'
-        ]);
     }
     public function destroy(Acara $event)
     {
@@ -136,6 +153,12 @@ class AdminController extends Controller
         $event = Acara::latest()->take(6)->get();
         $count = Acara::count();
         return view('welcome', compact('event', 'count'));
+    }
+
+    public function lihatacara($id)
+    {
+        $event = Acara::find($id);
+        return view('lihat-event', compact('event'));
     }
 
     public function peserta()
@@ -186,7 +209,10 @@ class AdminController extends Controller
 
     public function dashboardb2()
     {
-        $event = Acara::wherenotNull('harga')->paginate();
+        $event = Acara::whereNotNull('harga_mhs')
+        ->orwhereNotNull('harga_dosen')
+        ->orwhereNotNull('harga_umum')
+        ->paginate();
         return view('biro2.dashboard', compact('event'));
     }
 
@@ -215,7 +241,6 @@ class AdminController extends Controller
             $history->acara_id = $pembayaran->acara_id;
             if ($status === '1') {
                 $history->judul = 'Status Pembayaran Acara ' . $pembayaran->acarap->nama_acara . ' Anda Telah Diubah Menjadi Valid';
-
             } elseif ($status === '0') {
                 $history->judul = 'Status Pembayaran Acara ' . $pembayaran->acarap->nama_acara . ' Anda Telah Diubah Menjadi Tidak Valid';
             }
@@ -229,10 +254,11 @@ class AdminController extends Controller
         }
     }
 
-    public function cetakpeserta($id){
+    public function cetakpeserta($id)
+    {
         $acara = Acara::find($id);
         $data = $acara->acarap->where('status', 1);
         $pdf = PDF::loadView('biro4.download_peserta', ['data' => $data]);
-        return $pdf->download('peserta_acara_'.$acara->nama_acara.'.pdf');
+        return $pdf->download('peserta_acara_' . $acara->nama_acara . '.pdf');
     }
 }

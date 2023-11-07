@@ -22,7 +22,9 @@ class CreateEventsTable extends Migration
             $table->dateTime('waktu_mulai');
             $table->dateTime('waktu_selesai');
             $table->string('lokasi');
-            $table->integer('harga')->nullable();
+            $table->integer('harga_dosen')->nullable();
+            $table->integer('harga_mhs')->nullable();
+            $table->integer('harga_umum')->nullable();
             $table->dateTime('batas_pendaftaran');
             $table->string('gambar');
             $table->string('terbuka_untuk');

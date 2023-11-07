@@ -23,10 +23,6 @@ Route::get('/register', function () {
     return view('register');
 });
 
-Route::get('/dashboard/dosen', function () {
-    return view('dosen.dashboard');
-});
-
 
 Route::get('/dashboard/umum', function () {
     return view('umum.dashboard');
@@ -37,6 +33,8 @@ Route::post('/simpanregistrasi', '\App\Http\Controllers\RegisterController@simpa
 Route::post('/postlogin','\App\Http\Controllers\RegisterController@postlogin')->name('postlogin');
 Route::get('/logout','\App\Http\Controllers\RegisterController@logout')->name('logout');
 Route::get('/','\App\Http\Controllers\AdminController@home')->name('home');
+Route::get('/showevent/{id}','\App\Http\Controllers\AdminController@lihatacara')->name('lihatacara');
+
 
 Route::group(['middleware' => ['auth','cekrole:Biro 2']],function(){
     Route::get('/dashboard/biro2','\App\Http\Controllers\AdminController@dashboardb2')->name('dashboard.biro2');

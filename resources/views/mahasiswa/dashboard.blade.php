@@ -5,6 +5,9 @@
     max-height: 500px; /* Ganti tinggi sesuai kebutuhan Anda */
     overflow-y: auto;
 }
+.fc-event-time{
+        display: none;
+    }
 </style>
 @section('content')
 <div class="content-header">
@@ -106,7 +109,7 @@
             headerToolbar: {
                 left: 'prev,next',
                 center: 'title',
-                right: 'dayGridMonth,listWeek,listDay' // user can switch between the two
+                right: 'dayGridMonth,dayGridWeek' // user can switch between the two
             },
             themeSystem: 'bootstrap5',
             events: "{{ route('acara.list.mhs') }}",
