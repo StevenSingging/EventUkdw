@@ -64,7 +64,7 @@
                             @elseif($ev->acarap->harga_mhs != null && $ev->status == null)
                             <span class="badge badge-warning">Dalam Progress</span>
                             @elseif($ev->acarap->harga_mhs != null && $ev->status == '1')
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#pembayaran{{$ev->id}}">Bayar Disini</button>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#pembayarandsn{{$ev->id}}">Bayar Disini</button>
                             @elseif($ev->acarap->harga_mhs != null && $ev->status == '0')
                             <span class="badge badge-danger">Tidak Valid</span>
                             @endif
@@ -81,10 +81,10 @@
                         @endif
                         </td>
                     </tr>
-                    <div class="modal fade" id="pembayaran{{$ev->id}}">
+                    <div class="modal fade" id="pembayarandsn{{$ev->id}}">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="{{route('pembayaran', $ev->id)}}" method="post" enctype="multipart/form-data">
+                                <form action="{{route('bayar.dosen', $ev->id)}}" method="post" enctype="multipart/form-data">
                                     {{ csrf_field() }}
                                     <div class="modal-header">
                                         <h4 class="modal-title">Pembayaran</h4>
@@ -94,7 +94,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <img src="{{asset('AdminLTE-3.2.0/dist/img/qris.jpg')}}" style="display:block; margin-left:auto; margin-right:auto; width:50%; margin-bottom:5px" alt="">
-                                        <p>Biaya Pendaftaran : Rp. {{ number_format($ev->acarap->harga_mhs, 2, ',', '.') }}</p>
+                                        <p>Biaya Pendaftaran : Rp. {{ number_format($ev->acarap->harga_dosen, 2, ',', '.') }}</p>
 
                                         <div class="form-group">
                                             <label for="exampleInputFile">Upload Bukti Bayar</label>

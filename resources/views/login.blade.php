@@ -34,10 +34,10 @@
   <!-- /.login-logo -->
   <div class="card card-outline card-primary">
     <div class="card-header text-center">
-      <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+      <a href="../../index2.html" class="h1"><b>SI</b>EVENT</a>
     </div>
     <div class="card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Silahkan Login</p>
 
       <form action="{{route('postlogin')}}" method="post">
       {{ csrf_field() }}
@@ -70,7 +70,7 @@
       </form>
       <!-- /.social-auth-links -->
       <p class="mb-0">
-        <a href="/register" class="text-center">Register a new membership</a>
+        <a href="/register" class="text-center">Belum mempunyai akun?</a>
       </p>
     </div>
     <!-- /.card-body -->

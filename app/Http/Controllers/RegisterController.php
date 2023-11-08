@@ -15,8 +15,9 @@ class RegisterController extends Controller
     {
         // dd($request->all());
         // $pterpan = Pterpan::select('status')->where('no_induk',$request->no_induk);
-        $existingUser = User::where('nim', $request->nim)->orWhere('nidn', $request->nidn)->orWhere('email', $request->email)->first();
+        $existingUser = User::where('nim','==', $request->nim)->orWhere('nidn','==', $request->nidn)->orWhere('email','==', $request->email)->first();
         if ($existingUser) {
+            //dd($existingUser);
             return redirect('register')->with('fail','Data email atau no induk yang diinput sudah ada');
         } else {
             // Data no_induk belum ada, buat entri baru

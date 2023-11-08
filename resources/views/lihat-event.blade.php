@@ -103,14 +103,14 @@
                             </div>
                         </div>
                         <p class="card-text">
-                            {{$event->deskripsi}}
+                        {!! nl2br(e($event->deskripsi)) !!}
                         </p>
 
                         <a href="/login" class="mt-auto btn btn-primary  ">Daftar Sekarang</a>
                     </div>
                 </div>
                 <!-- Carousel start -->
-                <div class="col-md-5">
+                <div class="col-md-5" style="display: flex; align-items: center;">
                     <img src="{{ asset('/fotoacara/' . $event->gambar) }}" class="w-full" alt="Louvre" />
                 </div>
                 <!-- End of carousel -->

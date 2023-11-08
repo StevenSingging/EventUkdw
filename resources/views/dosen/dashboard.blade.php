@@ -1,5 +1,6 @@
 @extends('template.master')
 <title>Dashboard</title>
+@section('content')
 <style>
     .timeline {
     max-height: 500px; /* Ganti tinggi sesuai kebutuhan Anda */
@@ -84,9 +85,6 @@
                     <div class="modal-body">
                         <!-- Tempatkan data acara di sini -->
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -112,7 +110,7 @@
                 right: 'dayGridMonth,dayGridWeek' // user can switch between the two
             },
             themeSystem: 'bootstrap5',
-            events: "{{ route('acara.list.mhs') }}",
+            events: "{{ route('acara.list.dsn') }}",
             eventClick: function({
                 event
             }) {
@@ -127,7 +125,7 @@
                     '<h5>' + eventData.title + '</h5>' +
                     '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px"/>' + // Menampilkan gambar
                     '<p>' + deskripsi + '</p>' +
-                    '<a href="' + '{{ url('form_daftar_acara/mhs') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>'
+                    '<a href="' + '{{ url('form_daftar_acara/dosen') }}' + '/' + eventData.id + '" class="btn btn-primary mt-2"> Daftar Sekarang </a>'
                     // Tambahkan atribut lainnya sesuai kebutuhan
                 );
 

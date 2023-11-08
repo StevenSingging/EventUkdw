@@ -40,8 +40,6 @@ Route::group(['middleware' => ['auth','cekrole:Biro 2']],function(){
     Route::get('/dashboard/biro2','\App\Http\Controllers\AdminController@dashboardb2')->name('dashboard.biro2');
     Route::get('/validasipembayaran/biro2/{id}','\App\Http\Controllers\AdminController@peserta_acara_biro2')->name('peserta.acara');
     Route::post('/update_pembayaran/biro2/{id}','\App\Http\Controllers\AdminController@updatepembayaran')->name('validasi.pembayaran');
-
-
 });  
 
 Route::group(['middleware' => ['auth','cekrole:Biro 4']],function(){
@@ -64,5 +62,16 @@ Route::group(['middleware' => ['auth','cekrole:Mahasiswa']],function(){
     Route::post('/simpandaftaracara/mhs/{id}', '\App\Http\Controllers\MahasiswaController@simpandaftar')->name('simpandaftar');
     Route::get('/daftar_acara/mhs','\App\Http\Controllers\MahasiswaController@daftaracara')->name('daftaracara.mahasiswa');
     Route::post('/bayar/mhs/{id}', '\App\Http\Controllers\MahasiswaController@pembayaran')->name('pembayaran');
+
+});
+
+Route::group(['middleware' => ['auth','cekrole:Dosen']],function(){
+    Route::get('/dashboard/dosen','\App\Http\Controllers\DosenController@index')->name('dashboard.dosen');
+    Route::get('/list/acara/dsn','\App\Http\Controllers\DosenController@listacara')->name('acara.list.dsn');
+    Route::get('/form_daftar_acara/dosen/{id}', '\App\Http\Controllers\DosenController@formdaftaracara')->name('daftaracara');
+    Route::post('/simpandaftaracara/dosen/{id}', '\App\Http\Controllers\DosenController@simpandaftar')->name('simpandaftardsn');
+    Route::get('/daftar_acara/dosen','\App\Http\Controllers\DosenController@daftaracara')->name('daftaracara.dosen');
+    Route::post('/bayar/dosen/{id}', '\App\Http\Controllers\DosenController@pembayarandsn')->name('bayar.dosen');
+
 
 });

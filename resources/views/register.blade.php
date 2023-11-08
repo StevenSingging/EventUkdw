@@ -26,10 +26,10 @@
     @endif
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="../../index2.html" class="h1"><b>Admin</b>LTE</a>
+                <a href="../../index2.html" class="h1"><b>SI</b>EVENT</a>
             </div>
             <div class="card-body">
-                <p class="login-box-msg">Register a new membership</p>
+                <p class="login-box-msg">Daftar Akun Baru</p>
 
                 <form action="{{route('simpanregistrasi')}}" method="post">
                 {{ csrf_field() }}
@@ -106,7 +106,7 @@
                     </div>
                 </form>
 
-                <a href="/login" class="text-center">I already have a membership</a>
+                <a href="/login" class="text-center">Sudah mempunyai akun?</a>
             </div>
             <!-- /.form-box -->
         </div><!-- /.card -->
