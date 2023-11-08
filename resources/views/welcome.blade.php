@@ -109,7 +109,7 @@
         <img class="card-img-top" src="{{ asset('fotoacara/'.$ev->gambar)}}" style="height:50%" alt="Card image cap">
         <div class="card-body">
           <a href="{{route('lihatacara',$ev->id)}}" class="card-title h5" >{{$ev->nama_acara}}</a>
-          <p class="card-text" style="margin-top: 10px;">{{$ev->deskripsi}}</p>
+          <p class="card-text" style="margin-top: 10px;">{{ substr($ev->deskripsi, 0, 100) }}</p>
           <p class="card-text"><small class="text-muted">Last updated {{ $ev->updated_at->diffForHumans() }}</small></p>
         </div>
       </div>
