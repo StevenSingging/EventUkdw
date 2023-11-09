@@ -1,6 +1,5 @@
 @extends('template.master')
 <title>Dashboard</title>
-@section('content')
 <style>
     .timeline {
     max-height: 500px; /* Ganti tinggi sesuai kebutuhan Anda */

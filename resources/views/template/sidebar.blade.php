@@ -79,6 +79,26 @@
       </a>
 </li>
 @endif
+@if(auth()->user()->role == "Umum")
+<li class="nav-item">
+      <a href="{{route('dashboard.umum')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>
+          Dashboard
+
+        </p>
+      </a>
+</li>
+<li class="nav-item">
+      <a href="{{route('daftaracara.umum')}}" class="nav-link {{ (request()->segment(1) == 'daftar_acara') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-calendar-alt"></i>
+        <p>
+          Daftar Acara
+
+        </p>
+      </a>
+</li>
+@endif
 <li class="nav-item">
       <a href="{{route('logout')}}" class="nav-link" onclick="return confirm('Apakah Anda yakin akan logout ?')">
         <i class="nav-icon fas fa-right-from-bracket"></i>

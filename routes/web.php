@@ -24,11 +24,6 @@ Route::get('/register', function () {
 });
 
 
-Route::get('/dashboard/umum', function () {
-    return view('umum.dashboard');
-});
-
-
 Route::post('/simpanregistrasi', '\App\Http\Controllers\RegisterController@simpanregistrasi')->name('simpanregistrasi');
 Route::post('/postlogin','\App\Http\Controllers\RegisterController@postlogin')->name('postlogin');
 Route::get('/logout','\App\Http\Controllers\RegisterController@logout')->name('logout');
@@ -72,6 +67,17 @@ Route::group(['middleware' => ['auth','cekrole:Dosen']],function(){
     Route::post('/simpandaftaracara/dosen/{id}', '\App\Http\Controllers\DosenController@simpandaftar')->name('simpandaftardsn');
     Route::get('/daftar_acara/dosen','\App\Http\Controllers\DosenController@daftaracara')->name('daftaracara.dosen');
     Route::post('/bayar/dosen/{id}', '\App\Http\Controllers\DosenController@pembayarandsn')->name('bayar.dosen');
+
+
+});
+
+Route::group(['middleware' => ['auth','cekrole:Umum']],function(){
+    Route::get('/dashboard/umum','\App\Http\Controllers\UmumController@index')->name('dashboard.umum');
+    Route::get('/list/acara/umum','\App\Http\Controllers\UmumController@listacara')->name('acara.list.umum');
+    Route::get('/form_daftar_acara/umum/{id}', '\App\Http\Controllers\UmumController@formdaftaracara')->name('daftaracara');
+    Route::post('/simpandaftaracara/umum/{id}', '\App\Http\Controllers\UmumController@simpandaftar')->name('simpandaftarumum');
+    Route::get('/daftar_acara/umum','\App\Http\Controllers\UmumController@daftaracara')->name('daftaracara.umum');
+    Route::post('/bayar/umum/{id}', '\App\Http\Controllers\UmumController@pembayaranumum')->name('bayar.umum');
 
 
 });

@@ -72,6 +72,9 @@
       <p class="mb-0">
         <a href="/register" class="text-center">Belum mempunyai akun?</a>
       </p>
+      <p class="mb-0">
+        <a href="/" class="text-center">Kembali ke halaman utama</a>
+      </p>
     </div>
     <!-- /.card-body -->
   </div>

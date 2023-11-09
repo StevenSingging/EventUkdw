@@ -7,7 +7,7 @@ use App\Models\Pendaftaran_Acara;
 use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 
-class DosenController extends Controller
+class UmumController extends Controller
 {
     public function index(){
         $riwayat = History::select('judul', 'user_id', 'created_at', 'acara_id')
@@ -18,7 +18,7 @@ class DosenController extends Controller
             ->groupBy(function ($item) {
                 return $item->tanggal;
             });
-        return view('dosen.dashboard',compact('riwayat'));
+        return view('umum.dashboard',compact('riwayat'));
     }
 
     public function listacara(Request $request)
@@ -33,7 +33,7 @@ class DosenController extends Controller
         foreach ($acara as $a) {
             $terbuka_untuk = json_decode($a->terbuka_untuk);
 
-            if (in_array('Dosen', $terbuka_untuk) || in_array('Umum', $terbuka_untuk)) {
+            if (in_array('Umum', $terbuka_untuk)) {
                 $events[] = [
                     'id' => $a->id,
                     'jenis_acara' => $a->jenis_acara,
@@ -57,7 +57,7 @@ class DosenController extends Controller
     public function formdaftaracara($id)
     {
         $acara = Acara::find($id);
-        return view('dosen.form_pendaftaran', compact('acara'));
+        return view('umum.form_pendaftaran', compact('acara'));
     }
 
     public function simpandaftar(Request $request, $id)
@@ -76,7 +76,7 @@ class DosenController extends Controller
                 'alert-type' => 'error'
             );
             // Pengguna sudah mendaftar, berikan pesan kesalahan atau tindakan lain.
-            return redirect('/dashboard/dosen')->with($sucess);
+            return redirect('/dashboard/umum')->with($sucess);
         }
 
         $daftar = new Pendaftaran_Acara();
@@ -90,7 +90,7 @@ class DosenController extends Controller
             $pembayaran->user_id = $request->user()->id;
             $pembayaran->acara_id = $acara->id;
             $pembayaran->pendaftaran_id = $daftar->id;
-            $pembayaran->jumlah_pembayaran = $acara->harga_dosen;
+            $pembayaran->jumlah_pembayaran = $acara->harga_umum;
             $pembayaran->save();
         }
 
@@ -107,17 +107,17 @@ class DosenController extends Controller
             'alert-type' => 'success'
         );
 
-        return redirect('/dashboard/dosen')->with($sucess);
+        return redirect('/dashboard/umum')->with($sucess);
     }
 
     public function daftaracara()
     {
         $acara = Pendaftaran_Acara::where('user_id', auth()->user()->id)->paginate();
 
-        return view('dosen.daftar_acara', compact('acara'));
+        return view('umum.daftar_acara', compact('acara'));
     }
 
-    public function pembayarandsn(Request $request, $id)
+    public function pembayaranumum(Request $request, $id)
     {
         // Menggunakan first() untuk mendapatkan instance model
         $pembayaran = Pembayaran::where('pendaftaran_id', $id)->first();
