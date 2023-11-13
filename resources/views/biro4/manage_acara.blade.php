@@ -38,11 +38,14 @@
                             <select class="custom-select" name="jenis_acara">
                                 <option selected>Choose...</option>
                                 <option value="Seminar">Seminar</option>
-                                <option value="Event Kampus">Event Kampus</option>
+                                <option value="Lomba">Lomba</option>
+                                <option value="Workshop">Workshop</option>
+                                <option value="Pelatihan">Pelatihan</option>
+                                <option value="Sosial">Sosial</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Nama Acara</label>
+                            <label for="exampleInputPassword1">Judul Acara</label>
                             <input type="text" class="form-control" name="nama_acara" placeholder="Nama Acara">
                         </div>
                         <div class="form-group">
@@ -64,6 +67,27 @@
                         <div class="form-group">
                             <label for="exampleInputPassword1">Lokasi Acara</label>
                             <input type="text" class="form-control" name="lokasi" placeholder="Lokasi Acara">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Terbuka Untuk</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Mahasiswa" name="terbuka_untuk[]" id="chkMahasiswa">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Mahasiswa
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Dosen" name="terbuka_untuk[]" id="chkDosen">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Dosen
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Umum" name="terbuka_untuk[]" id="chkUmum">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Umum
+                                </label>
+                            </div>
                         </div>
                         <div class="form-group" id="hargaInputmhs" style="display: none;">
                             <label for="">Harga Mahasiswa</label>
@@ -91,27 +115,10 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="">Terbuka Untuk</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Mahasiswa" name="terbuka_untuk[]" id="chkMahasiswa">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Mahasiswa
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Dosen" name="terbuka_untuk[]" id="chkDosen">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Dosen
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="Umum" name="terbuka_untuk[]" id="chkUmum">
-                                <label class="form-check-label" for="flexCheckDefault">
-                                    Umum
-                                </label>
-                            </div>
+                            <label for="exampleInputPassword1">Penanggung Jawab</label>
+                            <input type="text" class="form-control" name="penanggung_jawab">
                         </div>
-                        
+
 
                         <button type="submit" class="btn btn-primary">Submit</button>
 
@@ -147,16 +154,24 @@
 
 <script>
     const modal = $('#modal-action')
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
+            dayMaxEventRows: true, // for all non-TimeGrid view
+            views: {
+                dayGrid: {
+                    dayMaxEventRows: 2,
+                },
+            },
             headerToolbar: {
                 left: 'prev,next',
                 center: 'title',
                 right: 'dayGridMonth,dayGridWeek' // user can switch between the two
             },
             themeSystem: 'bootstrap5',
+            timeZone: 'local',
             events: "{{ route('acara.list') }}",
             eventClick: function({
                 event
@@ -165,7 +180,30 @@
                     url: `{{ url('events') }}/${event.id}/edit`,
                     success: function(res) {
                         modal.html(res).modal('show')
-
+                        $('#deleteButton').off('click').on('click', function(e) {
+                            if (confirm('Apakah Anda yakin ingin menghapus acara ini?')) {
+                                $.ajax({
+                                    url: `{{ url('eventsdelete') }}/${event.id}`,
+                                    method: 'delete',
+                                    headers: {
+                                        'X-CSRF-TOKEN': csrfToken,
+                                        'Accept': 'application/json'
+                                    },
+                                    success: function(res) {
+                                        modal.modal('hide');
+                                        calendar.refetchEvents();
+                                    },
+                                    error: function(res) {
+                                        const message = res.responseJSON.message || 'Terjadi kesalahan';
+                                        iziToast.error({
+                                            title: 'Error',
+                                            message: message,
+                                            position: 'topRight'
+                                        });
+                                    }
+                                });
+                            }
+                        });
                         $('#form-action').on('submit', function(e) {
                             e.preventDefault()
                             const form = this
@@ -186,20 +224,25 @@
                 })
             },
             eventDrop: function(info) {
-                const event = info.event
+                const event = info.event;
+
+                // Menyusun data yang akan dikirim dalam request PUT
+                const eventData = {
+                    id: event.id,
+                    start_date: event.startStr,
+                    end_date: event.end.toISOString().substring(0, 10),
+                    title: event.title,
+                    category: event.extendedProps.category
+                };
+
+                // Ajax request untuk mengupdate acara
                 $.ajax({
                     url: `{{ url('events') }}/${event.id}`,
                     method: 'put',
-                    data: {
-                        id: event.id,
-                        start_date: event.startStr,
-                        end_date: event.end.toISOString().substring(0, 10),
-                        title: event.title,
-                        category: event.extendedProps.category
-                    },
+                    data: eventData,
                     headers: {
                         'X-CSRF-TOKEN': csrfToken,
-                        accept: 'application/json'
+                        'Accept': 'application/json'
                     },
                     success: function(res) {
                         iziToast.success({
@@ -209,21 +252,24 @@
                         });
                     },
                     error: function(res) {
-                        const message = res.responseJSON.message
-                        info.revert()
+                        const message = res.responseJSON.message;
+                        info.revert();
                         iziToast.error({
                             title: 'Error',
                             message: message ?? 'Something wrong',
                             position: 'topRight'
                         });
                     }
-                })
-            },
-        });
+                });
 
+            },
+
+        });
         calendar.render();
     });
 </script>
+
+
 <script>
     // Ambil elemen checkbox
     var chkMahasiswa = document.getElementById('chkMahasiswa');

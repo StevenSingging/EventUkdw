@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth','cekrole:Biro 4']],function(){
     Route::get('/manage_peserta/biro4/{id}','\App\Http\Controllers\AdminController@peserta_acara')->name('manage.peserta');
     Route::post('/update_peserta/biro4/{id}','\App\Http\Controllers\AdminController@validasipendaftaran')->name('validasi.peserta');
     Route::get('/downloadpeserta/biro4/{id}','\App\Http\Controllers\AdminController@cetakpeserta')->name('cetak.peserta');
-
+    Route::delete('/eventsdelete/{eventId}', '\App\Http\Controllers\AdminController@destroy')->name('events.destroy');
 });
 
 Route::group(['middleware' => ['auth','cekrole:Mahasiswa']],function(){

@@ -1,4 +1,5 @@
 <x-modal-action action="{{ $action }}">
+
     @if ($data->id)
     @method('put')
     @endif
@@ -33,17 +34,41 @@
         <label for="exampleInputPassword1">Lokasi Acara</label>
         <input type="text" class="form-control" name="lokasi" value="{{ $data->lokasi }}" placeholder="Lokasi Acara">
     </div>
-    <div class="form-group" id="hargaInputmhs">
-        <label for="exampleInputPassword1">Harga Mahasiswa</label>
-        <input type="number" class="form-control" name="harga_mhs"   value="{{ $data->harga_mhs }}" placeholder="Harga Mahasiswa">
+    @php
+    $tbk = json_decode($data->terbuka_untuk);
+    @endphp
+    <div class="form-group">
+        <label for="">Terbuka Untuk</label>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Mahasiswa" name="terbuka_untuk[]" id="chkmhs" @if (in_array('Mahasiswa', $tbk)) checked @endif>
+            <label class="form-check-label" for="flexCheckDefault">
+                Mahasiswa
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Dosen" name="terbuka_untuk[]" id="chkdsn" @if (in_array('Dosen', $tbk)) checked @endif>
+            <label class="form-check-label" for="flexCheckDefault">
+                Dosen
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="Umum" name="terbuka_untuk[]" id="chkumum" @if (in_array('Umum', $tbk)) checked @endif>
+            <label class="form-check-label" for="flexCheckDefault">
+                Umum
+            </label>
+        </div>
     </div>
-    <div class="form-group" id="hargaInputdsn">
+    <div class="form-group" id="hargaInputmahasiswa" style="display: none;">
+        <label for="exampleInputPassword1">Harga Mahasiswa</label>
+        <input type="number" class="form-control" name="harga_mhs" value="{{ $data->harga_mhs }}" placeholder="Harga Mahasiswa">
+    </div>
+    <div class="form-group" id="hargaInputdosen" style="display: none;">
         <label for="exampleInputPassword1">Harga Dosen</label>
         <input type="number" class="form-control" name="harga_dosen" value="{{ $data->harga_dosen }}" placeholder="Harga Dosen">
     </div>
-    <div class="form-group" id="hargaInputumum">
+    <div class="form-group" id="hargaInputumums" style="display: none;">
         <label for="exampleInputPassword1">Harga Umum</label>
-        <input type="number" class="form-control" name="harga_umum"  value="{{ $data->harga_umum }}" placeholder="Harga Umum">
+        <input type="number" class="form-control" name="harga_umum" value="{{ $data->harga_umum }}" placeholder="Harga Umum">
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Batas Pendaftaran</label>
@@ -58,61 +83,66 @@
             </div>
         </div>
     </div>
-    @php
-    $tbk = json_decode($data->terbuka_untuk);
-    @endphp
-    <div class="form-group">
-        <label for="">Terbuka Untuk</label>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Mahasiswa" name="terbuka_untuk[]" id="chkMahasiswa" @if (in_array('Mahasiswa', $tbk)) checked @endif>
-            <label class="form-check-label" for="flexCheckDefault">
-                Mahasiswa
-            </label>
+    <div class="row mt-3" style="display: flex; justify-content:space-between;">
+        <div >
+            <button type="button" class="btn btn-danger" name="delete" id="deleteButton">Hapus</button>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Dosen" name="terbuka_untuk[]" id="chkDosen" @if (in_array('Dosen', $tbk)) checked @endif>
-            <label class="form-check-label" for="flexCheckDefault">
-                Dosen
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="Umum" name="terbuka_untuk[]" id="chkUmum" @if (in_array('Umum', $tbk)) checked @endif>
-            <label class="form-check-label" for="flexCheckDefault">
-                Umum
-            </label>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <div class="mb-3">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" name="delete" role="switch" id="flexSwitchCheckDefault">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Delete</label>
-                </div>
-            </div>
+        <div >
+            <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
     </div>
     <script>
-    // Ambil elemen checkbox
-    var chkMahasiswa = document.getElementById('chkMahasiswa');
-    var chkDosen = document.getElementById('chkDosen');
-    var chkUmum = document.getElementById('chkUmum');
+        // Ambil elemen checkbox
+        var chkMahasiswa = document.getElementById('chkmhs');
+        var chkDosen = document.getElementById('chkdsn');
+        var chkUmum = document.getElementById('chkumum');
 
-    // Ambil elemen input harga
-    var hargaInputdsn = document.getElementById('hargaInputdsn');
-    var hargaInputmhs = document.getElementById('hargaInputmhs');
-    var hargaInputumum = document.getElementById('hargaInputumum');
+        // Ambil elemen input harga
+        var hargaInputdsn = document.getElementById('hargaInputdosen');
+        var hargaInputmhs = document.getElementById('hargaInputmahasiswa');
+        var hargaInputumum = document.getElementById('hargaInputumums');
 
 
-    // Tambahkan event listener saat checkbox berubah
-    chkMahasiswa.addEventListener('change', toggleHargaInput);
-    chkDosen.addEventListener('change', toggleHargaInput);
-    chkUmum.addEventListener('change', toggleHargaInput);
+        // Tambahkan event listener saat checkbox berubah
+        chkMahasiswa.addEventListener('change', toggleHargaInput);
+        chkDosen.addEventListener('change', toggleHargaInput);
+        chkUmum.addEventListener('change', toggleHargaInput);
 
-    function toggleHargaInput() {
-            hargaInputmhs.disabled = !chkMahasiswa.checked;
-            hargaInputdsn.disabled = !chkDosen.checked;
-            hargaInputumum.disabled = !chkUmum.checked;
-    }
-</script>
+        function toggleHargaInput() {
+            hargaInputmhs.style.display = chkMahasiswa.checked ? 'block' : 'none';
+            hargaInputdsn.style.display = chkDosen.checked ? 'block' : 'none';
+            hargaInputumum.style.display = chkUmum.checked ? 'block' : 'none';
+        }
+    </script>
+    <!-- <script>
+        const eventId = "{{ $data->id }}"; // Ganti dengan cara Anda mendapatkan ID acara yang benar
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        const modal = $('#modal-action');
+        $('#deleteButton').on('click', function() {
+            if (confirm('Apakah Anda yakin ingin menghapus acara ini?')) {
+
+                $.ajax({
+                    url: `{{ url('eventsdelete') }}/${eventId}`,
+                    method: 'delete',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Accept': 'application/json'
+                    },
+                    success: function(res) {
+                        modal.modal('hide');
+                        location.reload();
+                    },
+                    error: function(res) {
+                        const message = res.responseJSON.message || 'Terjadi kesalahan';
+                        iziToast.error({
+                            title: 'Error',
+                            message: message,
+                            position: 'topRight'
+                        });
+                    }
+                });
+            }
+            console.log(eventId)
+        });
+    </script> -->
 </x-modal-action>

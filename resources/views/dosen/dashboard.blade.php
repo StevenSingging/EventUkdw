@@ -103,6 +103,12 @@
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
+            dayMaxEventRows: true, // for all non-TimeGrid view
+            views: {
+                dayGrid: {
+                    dayMaxEventRows: 2,
+                },
+            },
             headerToolbar: {
                 left: 'prev,next',
                 center: 'title',

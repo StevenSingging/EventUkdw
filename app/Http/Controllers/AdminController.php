@@ -9,7 +9,7 @@ use App\Models\History;
 use App\Models\Pendaftaran_Acara;
 use App\Models\Pembayaran;
 use PDF;
-
+use Illuminate\Support\Facades\Log;
 
 
 class AdminController extends Controller
@@ -69,6 +69,7 @@ class AdminController extends Controller
             $event->harga_umum = $request->harga_umum;
             $event->harga_mhs = $request->harga_mhs;
             $event->batas_pendaftaran = $request->batas_pendaftaran;
+            $event->penanggung_jawab = $request->penanggung_jawab;
             $event->terbuka_untuk = json_encode($request->input('terbuka_untuk'));
             if ($request->hasFile('gambar')) {
                 $gambar = $request->file('gambar');
@@ -108,10 +109,7 @@ class AdminController extends Controller
      * Update the specified resource in storage.
      */
     public function update(EventRequest $request, Acara $event)
-    {
-        if ($request->has('delete')) {
-            return $this->destroy($event);
-        }
+    {   
         if (!empty($request->input('terbuka_untuk'))) {
             $event->jenis_acara = $request->jenis_acara;
             $event->nama_acara = $request->nama_acara;
@@ -139,13 +137,16 @@ class AdminController extends Controller
             ]);
         }
     }
-    public function destroy(Acara $event)
+    public function destroy($id)
     {
+        $event = Acara::findOrFail($id);
         $event->delete();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Delete data successfully'
-        ]);
+        $sucess = array(
+            'message' => 'Anda berhasil menghapus acara',
+            'alert-type' => 'error'
+        );
+        return redirect()->back()->with($sucess);
+ 
     }
 
     public function home()

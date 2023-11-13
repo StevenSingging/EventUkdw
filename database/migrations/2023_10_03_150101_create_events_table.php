@@ -28,6 +28,7 @@ class CreateEventsTable extends Migration
             $table->dateTime('batas_pendaftaran');
             $table->string('gambar');
             $table->string('terbuka_untuk');
+            $table->string('penganggung_jawab');
             $table->timestamps();
         });
     }
