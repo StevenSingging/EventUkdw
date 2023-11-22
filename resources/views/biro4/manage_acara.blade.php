@@ -41,7 +41,9 @@
                                 <option value="Lomba">Lomba</option>
                                 <option value="Workshop">Workshop</option>
                                 <option value="Pelatihan">Pelatihan</option>
-                                <option value="Sosial">Sosial</option>
+                                <option value="Aktivitas Sosial">Aktivitas Sosial</option>
+                                <option value="Pameran">Pameran</option>
+                                <option value="Job Fair">Job Fair</option>
                             </select>
                         </div>
                         <div class="form-group">

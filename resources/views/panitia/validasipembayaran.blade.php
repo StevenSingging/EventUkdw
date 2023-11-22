@@ -55,9 +55,9 @@
                     <td>{{ $pst->userp->role }}</td>
                     <td>{{ date('d F Y', strtotime($pst->pembayaran->tanggal_pembayaran)) }}</td>
                     <td align="center">
-                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#bukti{{$pst->id}}"><span class="fa-solid fa-magnifying-glass-dollar" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#bukti{{$pst->id}}"><span class="fa-solid fa-magnifying-glass-dollar" aria-hidden="true"></span> Lihat Bukti</button>
                     </td>
-                    <td>
+                    <td align="center">
                         @if($pst->pembayaran->status_pembayaran == null)
                         <span class="badge badge-warning">Dalam Progress</span>
                         @elseif($pst->pembayaran->status_pembayaran == '1')

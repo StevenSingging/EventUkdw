@@ -18,7 +18,7 @@
         </p>
       </a>
 </li>
-<li class="nav-item">
+<!-- <li class="nav-item">
       <a href="{{route('peserta.admin')}}" class="nav-link {{ (request()->segment(1) == 'peserta') ? 'active' : '' }}">
         <i class="nav-icon fas fa-user-alt"></i>
         <p>
@@ -26,7 +26,7 @@
 
         </p>
       </a>
-</li>
+</li> -->
 @endif
 @if(auth()->user()->role == "Biro 2")
 <li class="nav-item">
@@ -94,6 +94,37 @@
         <i class="nav-icon fas fa-calendar-alt"></i>
         <p>
           Daftar Acara
+
+        </p>
+      </a>
+</li>
+@endif
+@if(auth()->user()->role == "Staff")
+<li class="nav-item">
+      <a href="{{route('dashboard.staff')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>
+          Dashboard
+
+        </p>
+      </a>
+</li>
+<li class="nav-item">
+      <a href="{{route('daftaracara.staff')}}" class="nav-link {{ (request()->segment(1) == 'daftar_acara') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-calendar-alt"></i>
+        <p>
+          Daftar Acara
+
+        </p>
+      </a>
+</li>
+@endif
+@if(auth()->user()->role == "Panitia")
+<li class="nav-item">
+      <a href="{{route('dashboard.panitia')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-tachometer-alt"></i>
+        <p>
+          Dashboard
 
         </p>
       </a>

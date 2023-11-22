@@ -47,6 +47,8 @@
                             <option value="Mahasiswa">Mahasiswa</option>
                             <option value="Dosen">Dosen</option>
                             <option value="Umum">Umum</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Panitia">Panitia</option>
                         </select>
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -55,7 +57,7 @@
                         </div>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="number" class="form-control" name="nidn" id="nidnInput" placeholder="NIDN">
+                        <input type="number" class="form-control" name="nidn" id="nidnInput" placeholder="NIP">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -138,8 +140,13 @@
         } else if (roleSelect.value === 'Umum'){
             nidnInput.disabled = true;
             nimInput.disabled = true;
+        }else if (roleSelect.value === 'Staff'){
+            nidnInput.disabled = false;
+            nimInput.disabled = true;
+        }else if (roleSelect.value === 'Panitia'){
+            nidnInput.disabled = true;
+            nimInput.disabled = true;
         }else {
-            
             nidnInput.disabled = true;
             nimInput.disabled = true;
         }

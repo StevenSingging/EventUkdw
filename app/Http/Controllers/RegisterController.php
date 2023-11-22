@@ -50,6 +50,10 @@ class RegisterController extends Controller
                 return redirect('dashboard/biro2');
             }else if(auth()->user()->role=='Umum'){
                 return redirect('dashboard/umum');
+            }else if(auth()->user()->role=='Panitia'){
+                return redirect('dashboard/panitia');
+            }else if(auth()->user()->role=='Staff'){
+                return redirect('dashboard/staff');
             }
         }
         return redirect('/login')->with('postlogin','Username atau Password Anda Salah, Silakan lakukan proses login kembali');

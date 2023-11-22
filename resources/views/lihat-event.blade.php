@@ -49,7 +49,7 @@
 <body>
     <nav class="navbar sticky-top navbar-light bg-light">
         <a class="navbar-brand" href="#">
-            <img src="https://www.ukdw.ac.id/wp-content/uploads/2017/10/logo-ukdw.png" width="30" height="40" class="d-inline-block align-top" alt="">
+            <img src="{{asset('AdminLTE-3.2.0/dist/img/LOGO UKDW WARNA PNG.png')}}" width="30" height="40" class="d-inline-block align-top" alt="">
             SI Event UKDW
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -89,21 +89,45 @@
                                     {{ $event->lokasi}}
                                 </div>
                             </div>
+
+
                             <div class="flex flex-col">
                                 <div class="mb-4 flex items-center text-sm font-medium">
                                     <i class="fa-regular fa-calendar fa-lg ml-3 mr-2" style="color:cadetblue"></i>
-                                    {{ date('d F Y', strtotime($event->waktu_mulai)) }} - {{ date('d F Y', strtotime($event->waktu_selesai)) }}
+                                    @php
+                                    $startFormatted = date('d M Y', strtotime($event->waktu_mulai));
+                                    $endFormatted = date('d M Y', strtotime($event->waktu_selesai));
+
+                                    // Tampilkan hanya satu kali jika tanggal mulai dan tanggal selesai sama
+                                    if ($startFormatted == $endFormatted) {
+                                    echo $startFormatted;
+                                    } else {
+                                    echo $startFormatted . ' - ' . $endFormatted;
+                                    }
+                                    @endphp
                                 </div>
                             </div>
                             <div class="flex flex-col">
                                 <div class="mb-4 flex items-center text-sm font-medium">
                                     <i class="fa-regular fa-clock fa-lg ml-3 mr-2" style="color:cadetblue"></i>
-                                    {{ date('H i', strtotime($event->waktu_mulai)) }} - {{ date('H i', strtotime($event->selesai)) }} WIB
+                                    @php
+                                    $startFormatted = date('d M Y', strtotime($event->waktu_mulai));
+                                    $endFormatted = date('d M Y', strtotime($event->waktu_selesai));
+
+                                    // Tampilkan hanya satu kali jika tanggal mulai dan tanggal selesai sama
+                                    if ($startFormatted == $endFormatted) {
+                                        echo date('H:i', strtotime($event->waktu_mulai)). ' - ' . date('H:i', strtotime($event->selesai)). ' WIB';
+                                       
+                                    } else {
+                                        echo date('H:i', strtotime($event->waktu_mulai)). ' WIB';
+                                    }
+                                    @endphp
                                 </div>
                             </div>
                         </div>
                         <p class="card-text">
-                        {!! nl2br(e($event->deskripsi)) !!}
+                            {!! nl2br(e($event->deskripsi)) !!} <br>
+                            CP : {{$event->penanggung_jawab}}
                         </p>
 
                         <a href="/login" class="mt-auto btn btn-primary  ">Daftar Sekarang</a>

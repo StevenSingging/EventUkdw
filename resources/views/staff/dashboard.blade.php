@@ -120,7 +120,7 @@
                 right: 'dayGridMonth,dayGridWeek' // user can switch between the two
             },
             themeSystem: 'bootstrap5',
-            events: "{{ route('acara.list.mhs') }}",
+            events: "{{ route('acara.list.staff') }}",
             eventClick: function({
                 event
             }) {
@@ -142,7 +142,7 @@
                     if (jenis_acara == 'Job Fair') {
                         return '<div>'+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>'+'</div>'; // Atau kode HTML sesuai kebutuhan jika jenis_acara adalah 'JobFair'
                     } else {
-                        return '<div>'+ '<a href="' + '{{ url('form_daftar_acara/mhs') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>' +'</div>'+
+                        return '<div>'+ '<a href="' + '{{ url('form_daftar_acara/staff') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>' +'</div>'+
                         '<div>'+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +'</div>';
                     }
                     

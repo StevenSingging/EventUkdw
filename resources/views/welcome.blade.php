@@ -63,7 +63,7 @@
   <!-- Image and text -->
   <nav class="navbar sticky-top navbar-light bg-light">
     <a class="navbar-brand" href="#">
-      <img src="https://www.ukdw.ac.id/wp-content/uploads/2017/10/logo-ukdw.png" width="30" height="40" class="d-inline-block align-top" alt="">
+      <img src="{{asset('AdminLTE-3.2.0/dist/img/LOGO UKDW WARNA PNG.png')}}" width="30" height="40" class="d-inline-block align-top" alt="">
       SI Event UKDW
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

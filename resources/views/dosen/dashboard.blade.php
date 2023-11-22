@@ -84,6 +84,7 @@
                     <div class="modal-body">
                         <!-- Tempatkan data acara di sini -->
                     </div>
+                    <div class="modal-footer"></div>
                 </div>
             </div>
         </div>
@@ -123,16 +124,26 @@
                 var eventData = event;
                 var deskripsi = eventData.extendedProps.deskripsi;
                 var gambar = eventData.extendedProps.gambar;
+                var jenis_acara = eventData.extendedProps.jenis_acara;
                 deskripsi = deskripsi.replace(/\n/g, '<br>');
                 console.log(eventData);
                 // Menampilkan data event dalam modal
                 modal.find('.modal-body').html(
                     '<h5>' + eventData.title + '</h5>' +
                     '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px"/>' + // Menampilkan gambar
-                    '<p>' + deskripsi + '</p>' +
-                    '<a href="' + '{{ url('form_daftar_acara/dosen') }}' + '/' + eventData.id + '" class="btn btn-primary mt-2"> Daftar Sekarang </a>'
+                    '<p>' + deskripsi + '</p>' 
+                    
                     // Tambahkan atribut lainnya sesuai kebutuhan
                 );
+                modal.find('.modal-footer').html(function() {
+                    if (jenis_acara == 'Job Fair') {
+                        return '<div>'+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>'+'</div>'; // Atau kode HTML sesuai kebutuhan jika jenis_acara adalah 'JobFair'
+                    } else {
+                        return '<div>'+ '<a href="' + '{{ url('form_daftar_acara/dosen') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>' +'</div>'+
+                        '<div>'+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +'</div>';
+                    }
+                    
+                });
 
                 modal.modal('show');
             }
