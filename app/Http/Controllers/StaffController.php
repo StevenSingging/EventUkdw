@@ -33,7 +33,7 @@ class StaffController extends Controller
         foreach ($acara as $a) {
             $terbuka_untuk = json_decode($a->terbuka_untuk);
 
-            if (in_array('Umum', $terbuka_untuk)) {
+            if (in_array('Staff', $terbuka_untuk) || in_array('Umum', $terbuka_untuk)) {
                 $events[] = [
                     'id' => $a->id,
                     'jenis_acara' => $a->jenis_acara,
@@ -47,6 +47,7 @@ class StaffController extends Controller
                     'batas_pendaftaran' => $a->batas_pendaftaran,
                     'gambar' => $a->gambar,
                     'terbuka_untuk' => $a->terbuka_untuk,
+                    'penanggung_jawab' => $a->penanggung_jawab,
                 ];
             }
         }

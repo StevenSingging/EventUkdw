@@ -127,13 +127,16 @@
                 var deskripsi = eventData.extendedProps.deskripsi;
                 var gambar = eventData.extendedProps.gambar;
                 var jenis_acara = eventData.extendedProps.jenis_acara;
+                var penanggung_jawab = eventData.extendedProps.penanggung_jawab;
+
                 deskripsi = deskripsi.replace(/\n/g, '<br>');
                 console.log(eventData);
                 // Menampilkan data event dalam modal
                 modal.find('.modal-body').html(
                     '<h5>' + eventData.title + '</h5>' +
                     '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px"/>' + // Menampilkan gambar
-                    '<p>' + deskripsi + '</p>' 
+                    '<p>' + deskripsi + '</p>' +
+                    '<br>' + '<p>' + 'CP : '+penanggung_jawab +'</p>' 
                     // Tambahkan atribut lainnya sesuai kebutuhan
                 );
                 modal.find('.modal-footer').html(function() {

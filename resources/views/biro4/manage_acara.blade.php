@@ -90,6 +90,12 @@
                                     Umum
                                 </label>
                             </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Staff" name="terbuka_untuk[]" id="chkStaff">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    Staff
+                                </label>
+                            </div>
                         </div>
                         <div class="form-group" id="hargaInputmhs" style="display: none;">
                             <label for="">Harga Mahasiswa</label>
@@ -102,6 +108,10 @@
                         <div class="form-group" id="hargaInputumum" style="display: none;">
                             <label for="">Harga Umum</label>
                             <input type="number" class="form-control" name="harga_umum">
+                        </div>
+                        <div class="form-group" id="hargaInputstaff" style="display: none;">
+                            <label for="">Harga Staff</label>
+                            <input type="number" class="form-control" name="harga_staff">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Batas Pendaftaran</label>
@@ -277,22 +287,25 @@
     var chkMahasiswa = document.getElementById('chkMahasiswa');
     var chkDosen = document.getElementById('chkDosen');
     var chkUmum = document.getElementById('chkUmum');
+    var chkStaff = document.getElementById('chkStaff');
 
     // Ambil elemen input harga
     var hargaInputdsn = document.getElementById('hargaInputdsn');
     var hargaInputmhs = document.getElementById('hargaInputmhs');
     var hargaInputumum = document.getElementById('hargaInputumum');
-
+    var hargaInputstaff = document.getElementById('hargaInputstaff');
 
     // Tambahkan event listener saat checkbox berubah
     chkMahasiswa.addEventListener('change', toggleHargaInput);
     chkDosen.addEventListener('change', toggleHargaInput);
     chkUmum.addEventListener('change', toggleHargaInput);
+    chkStaff.addEventListener('change', toggleHargaInput);
 
     function toggleHargaInput() {
         hargaInputmhs.style.display = chkMahasiswa.checked ? 'block' : 'none';
         hargaInputdsn.style.display = chkDosen.checked ? 'block' : 'none';
         hargaInputumum.style.display = chkUmum.checked ? 'block' : 'none';
+        hargaInputstaff.style.display = chkStaff.checked ? 'block' : 'none';
     }
 </script>
 @endsection

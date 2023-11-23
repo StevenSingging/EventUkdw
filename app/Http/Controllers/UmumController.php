@@ -47,6 +47,7 @@ class UmumController extends Controller
                     'batas_pendaftaran' => $a->batas_pendaftaran,
                     'gambar' => $a->gambar,
                     'terbuka_untuk' => $a->terbuka_untuk,
+                    'penanggung_jawab' => $a->penanggung_jawab,
                 ];
             }
         }

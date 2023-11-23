@@ -25,6 +25,7 @@ class CreateEventsTable extends Migration
             $table->integer('harga_dosen')->nullable();
             $table->integer('harga_mhs')->nullable();
             $table->integer('harga_umum')->nullable();
+            $table->integer('harga_staff')->nullable();
             $table->dateTime('batas_pendaftaran');
             $table->string('gambar');
             $table->string('terbuka_untuk');

@@ -68,6 +68,7 @@ class AdminController extends Controller
             $event->harga_dosen = $request->harga_dosen;
             $event->harga_umum = $request->harga_umum;
             $event->harga_mhs = $request->harga_mhs;
+            $event->harga_staff = $request->harga_staff;
             $event->batas_pendaftaran = $request->batas_pendaftaran;
             $event->penanggung_jawab = $request->penanggung_jawab;
             $event->terbuka_untuk = json_encode($request->input('terbuka_untuk'));
@@ -121,7 +122,9 @@ class AdminController extends Controller
             $event->harga_dosen = $request->harga_dosen;
             $event->harga_umum = $request->harga_umum;
             $event->harga_mhs = $request->harga_mhs;
+            $event->harga_staff = $request->harga_staff;
             $event->batas_pendaftaran = $request->batas_pendaftaran;
+            $event->penanggung_jawab = $request->penanggung_jawab;
             $event->terbuka_untuk = json_encode($request->input('terbuka_untuk'));
             if ($request->hasFile('gambar')) {
                 $gambar = $request->file('gambar');
