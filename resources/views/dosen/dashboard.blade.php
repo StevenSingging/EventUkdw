@@ -84,7 +84,7 @@
                     <div class="modal-body">
                         <!-- Tempatkan data acara di sini -->
                     </div>
-                    <div class="modal-footer"></div>
+                    <div class="modal-footer" style="display: flex; justify-content:space-between; "></div>
                 </div>
             </div>
         </div>
@@ -126,6 +126,10 @@
                 var gambar = eventData.extendedProps.gambar;
                 var jenis_acara = eventData.extendedProps.jenis_acara;
                 var penanggung_jawab = eventData.extendedProps.penanggung_jawab;
+                var nowa = eventData.extendedProps.nowa;
+                var hargamhs = eventData.extendedProps.harga_dosen;
+                var kouta = eventData.extendedProps.kouta;
+                var hargaText = hargamhs !== null ? '<p>' + 'Harga : ' + hargamhs + '</p>' : '';
                 deskripsi = deskripsi.replace(/\n/g, '<br>');
                 console.log(eventData);
                 // Menampilkan data event dalam modal
@@ -133,7 +137,8 @@
                     '<h5>' + eventData.title + '</h5>' +
                     '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px"/>' + // Menampilkan gambar
                     '<p>' + deskripsi + '</p>' +
-                    '<br>' + '<p>' + 'CP : '+penanggung_jawab +'</p>' 
+                    '<br>' + '<p>' + 'CP : '+ penanggung_jawab +' - ' + nowa +'</p>' + 
+                    hargaText + '<p>' + 'Kouta Peserta : '+ kouta +'</p>'
                     
                     // Tambahkan atribut lainnya sesuai kebutuhan
                 );

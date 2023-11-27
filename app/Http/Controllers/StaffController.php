@@ -34,21 +34,25 @@ class StaffController extends Controller
             $terbuka_untuk = json_decode($a->terbuka_untuk);
 
             if (in_array('Staff', $terbuka_untuk) || in_array('Umum', $terbuka_untuk)) {
-                $events[] = [
-                    'id' => $a->id,
-                    'jenis_acara' => $a->jenis_acara,
-                    'title' => $a->nama_acara,
-                    'start' => $a->waktu_mulai,
-                    'end' => $a->waktu_selesai,
-                    'color' => $a->warna,
-                    'deskripsi' => $a->deskripsi,
-                    'lokasi' => $a->lokasi,
-                    'harga' => $a->harga,
-                    'batas_pendaftaran' => $a->batas_pendaftaran,
-                    'gambar' => $a->gambar,
-                    'terbuka_untuk' => $a->terbuka_untuk,
-                    'penanggung_jawab' => $a->penanggung_jawab,
-                ];
+                if($a->status == '1'){
+                    $events[] = [
+                        'id' => $a->id,
+                        'jenis_acara' => $a->jenis_acara,
+                        'title' => $a->nama_acara,
+                        'start' => $a->waktu_mulai,
+                        'end' => $a->waktu_selesai,
+                        'color' => $a->warna,
+                        'deskripsi' => $a->deskripsi,
+                        'lokasi' => $a->lokasi,
+                        'harga_mhs' => $a->harga_mhs,
+                        'batas_pendaftaran' => $a->batas_pendaftaran,
+                        'gambar' => $a->gambar,
+                        'terbuka_untuk' => $a->terbuka_untuk,
+                        'penanggung_jawab' => $a->panitiaa->nama,
+                        'nowa' => $a->panitiaa->nowa,
+                        'kouta' => $a->kuota,
+                    ];
+                }
             }
         }
 

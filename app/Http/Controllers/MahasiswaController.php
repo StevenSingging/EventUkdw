@@ -29,28 +29,33 @@ class MahasiswaController extends Controller
         $end = date('YYYY-MM-DD ', strtotime($request->waktu_selesai));
         // $events = Acara::where('waktu_mulai','>=',$start)->orWhere('waktu_selesai','<=',$end)->orWhere('terbuka_untuk','Mahasiswa')->orWhere('terbuka_untuk','Umum')->get()
 
-        $acara = Acara::all();
+        $acara = Acara::with('panitiaa')->get();
         $events = [];
 
         foreach ($acara as $a) {
             $terbuka_untuk = json_decode($a->terbuka_untuk);
 
-            if (in_array('Mahasiswa', $terbuka_untuk) || in_array('Umum', $terbuka_untuk)) {
-                $events[] = [
-                    'id' => $a->id,
-                    'jenis_acara' => $a->jenis_acara,
-                    'title' => $a->nama_acara,
-                    'start' => $a->waktu_mulai,
-                    'end' => $a->waktu_selesai,
-                    'color' => $a->warna,
-                    'deskripsi' => $a->deskripsi,
-                    'lokasi' => $a->lokasi,
-                    'harga' => $a->harga,
-                    'batas_pendaftaran' => $a->batas_pendaftaran,
-                    'gambar' => $a->gambar,
-                    'terbuka_untuk' => $a->terbuka_untuk,
-                    'penanggung_jawab' => $a->penanggung_jawab,
-                ];
+            if (in_array('Mahasiswa', $terbuka_untuk) || in_array('Umum', $terbuka_untuk)  ) {
+                if($a->status == '1'){
+                    $events[] = [
+                        'id' => $a->id,
+                        'jenis_acara' => $a->jenis_acara,
+                        'title' => $a->nama_acara,
+                        'start' => $a->waktu_mulai,
+                        'end' => $a->waktu_selesai,
+                        'color' => $a->warna,
+                        'deskripsi' => $a->deskripsi,
+                        'lokasi' => $a->lokasi,
+                        'harga_mhs' => $a->harga_mhs,
+                        'batas_pendaftaran' => $a->batas_pendaftaran,
+                        'gambar' => $a->gambar,
+                        'terbuka_untuk' => $a->terbuka_untuk,
+                        'penanggung_jawab' => $a->panitiaa->nama,
+                        'nowa' => $a->panitiaa->nowa,
+                        'kouta' => $a->kuota,
+                    ];
+                }
+                
             }
         }
 

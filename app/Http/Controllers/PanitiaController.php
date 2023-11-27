@@ -14,8 +14,10 @@ class PanitiaController extends Controller
         $event = Acara::whereNotNull('harga_mhs')
         ->orwhereNotNull('harga_dosen')
         ->orwhereNotNull('harga_umum')
+        ->where('penanggung_jawab', auth()->user()->id)
+        ->where('status','1')
         ->paginate();
-        $acara = Acara::paginate();
+        $acara = Acara::where('penanggung_jawab', auth()->user()->id)->where('status','1')->paginate();
         return view('panitia.dashboard',compact('event','acara'));
     }
 
@@ -99,6 +101,50 @@ class PanitiaController extends Controller
         } else {
             // Tambahkan penanganan kesalahan jika status tidak valid
             return redirect()->back()->with('error', ' ');
+        }
+    }
+
+    public function pengajuanacara(){
+        $acara = Acara::where('penanggung_jawab', auth()->user()->id)->paginate();
+        return view('panitia.pengajuanacara',compact('acara'));
+    }
+
+    public function simpanpengajuan(Request $request){
+        $acara = new Acara();
+        if (!empty($request->input('terbuka_untuk'))) {
+            $acara->jenis_acara = $request->jenis_acara;
+            $acara->nama_acara = $request->nama_acara;
+            $acara->warna = $request->warna;
+            $acara->deskripsi = $request->deskripsi;
+            $acara->waktu_mulai = $request->waktu_mulai;
+            $acara->waktu_selesai = $request->waktu_selesai;
+            $acara->lokasi = $request->lokasi;
+            $acara->harga_dosen = $request->harga_dosen;
+            $acara->harga_umum = $request->harga_umum;
+            $acara->harga_mhs = $request->harga_mhs;
+            $acara->harga_staff = $request->harga_staff;
+            $acara->batas_pendaftaran = $request->batas_pendaftaran;
+            $acara->kuota = $request->kuota;
+            $acara->penanggung_jawab = auth()->user()->id;
+            $acara->terbuka_untuk = json_encode($request->input('terbuka_untuk'));
+            if ($request->hasFile('gambar')) {
+                $gambar = $request->file('gambar');
+                $namaGambar = time() . '.' . $gambar->getClientOriginalExtension();
+                $gambar->move(public_path('fotoacara'), $namaGambar);
+                $acara->gambar = $namaGambar;
+            }
+            $acara->save();
+            $sucess = array(
+                'message' => 'Anda sudah membuat acara',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($sucess);
+        } else {
+            $sucess = array(
+                'message' => 'Anda gagal membuat acara',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($sucess);
         }
     }
 }

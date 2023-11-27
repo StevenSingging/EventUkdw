@@ -62,7 +62,7 @@
 <body>
   <!-- Image and text -->
   <nav class="navbar sticky-top navbar-light bg-light">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/">
       <img src="{{asset('AdminLTE-3.2.0/dist/img/LOGO UKDW WARNA PNG.png')}}" width="30" height="40" class="d-inline-block align-top" alt="">
       SI Event UKDW
     </a>
@@ -80,16 +80,16 @@
       </ul>
     </div>
   </nav>
-  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="height: 50%; width:100%">
+  <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" style="height: 30%; width:100%">
     <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" style="height: 50%; width:100%" alt="First slide">
+      <div class="carousel-item active" >
+        <img class="d-block" src="{{asset('AdminLTE-3.2.0/dist/img/slide2021_01.jpg')}}" style="height: 30%; width:100%" alt="First slide">
       </div>
       <div class="carousel-item">
-        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" style="height: 50%; width:100%" alt="Second slide">
+        <img class="d-block" src="{{asset('AdminLTE-3.2.0/dist/img/slide2021_01.jpg')}}" style="height: 30%; width:100%" alt="Second slide">
       </div>
       <div class="carousel-item">
-        <img class="d-block" src="https://pmb.ukdw.ac.id/imgheader/slide2021_01.jpg" style="height: 50%; width:100%" alt="Third slide">
+        <img class="d-block" src="{{asset('AdminLTE-3.2.0/dist/img/slide2021_01.jpg')}}" style="height: 30%; width:100%" alt="Third slide">
       </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">

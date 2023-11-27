@@ -129,6 +129,15 @@
         </p>
       </a>
 </li>
+<li class="nav-item">
+      <a href="{{route('pengajuan.panitia')}}" class="nav-link {{ (request()->segment(1) == 'pengajuanacara') ? 'active' : '' }}">
+        <i class="nav-icon fas fa-calendar-plus"></i>
+        <p>
+         Pengajuan Acara
+
+        </p>
+      </a>
+</li>
 @endif
 <li class="nav-item">
       <a href="{{route('logout')}}" class="nav-link" onclick="return confirm('Apakah Anda yakin akan logout ?')">

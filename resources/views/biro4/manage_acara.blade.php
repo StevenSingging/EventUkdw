@@ -118,6 +118,10 @@
                             <input type="datetime-local" class="form-control" name="batas_pendaftaran">
                         </div>
                         <div class="form-group">
+                            <label for="">Kuota Peserta</label>
+                            <input type="number" class="form-control" name="kuota">
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputFile">Gambar</label>
                             <div class="input-group">
                                 <div class="custom-file">
@@ -127,8 +131,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Penanggung Jawab</label>
-                            <input type="text" class="form-control" name="penanggung_jawab">
+                            <label for="exampleInputEmail1">Penanggung Jawab</label>
+                            <select class="custom-select" name="jenis_acara">
+                                <option selected>Choose...</option>
+                                @foreach($panitia as $p)
+                                <option value="{{$p->id}}">{{$p->nama}} - {{$p->nowa}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
 
@@ -151,7 +160,9 @@
             </div>
 
         </div>
-        <div class="modal fade" id="modal-action"></div>
+        <div class="modal fade" id="modal-action">
+
+        </div>
 
     </div>
 </div>
@@ -192,6 +203,7 @@
                     url: `{{ url('events') }}/${event.id}/edit`,
                     success: function(res) {
                         modal.html(res).modal('show')
+                        
                         $('#deleteButton').off('click').on('click', function(e) {
                             if (confirm('Apakah Anda yakin ingin menghapus acara ini?')) {
                                 $.ajax({
@@ -214,6 +226,45 @@
                                         });
                                     }
                                 });
+                            }
+                        });
+                        $.ajax({
+                            url: "{{ route('users.list') }}",
+                            success: function(panitiaData) {
+                                // Ambil data acara
+                                $.ajax({
+                                    url: "{{ route('acara.list') }}",
+                                    success: function(acaraData) {
+                                        const selectPenanggungJawab = document.getElementById('panitiaForm1');
+                                        selectPenanggungJawab.innerHTML = '';
+
+                                        // Loop melalui panitia untuk membuat opsi dropdown
+                                        panitiaData.forEach(panitia => {
+                                            // Cek apakah panitia juga ada di data acara
+                                            const matchingAcara = acaraData.find(acaraData => acaraData.penanggung_jawab === panitia.id);
+
+                                            // Buat elemen option dan tambahkan ke dalam select
+                                            const option = document.createElement('option');
+                                            option.value = panitia.id;
+                                            option.text = panitia.nama;
+
+                                            // Tandai sebagai terpilih jika sesuai dengan acara
+                                            if (matchingAcara) {
+                                                option.selected = true;
+                                            }
+
+                                            selectPenanggungJawab.appendChild(option);
+                                        });
+                                    },
+                                    error: function(err) {
+                                        console.error('Error saat mengambil data acara:', err);
+                                    }
+                                });
+
+                                // ... (the rest of your eventClick function)
+                            },
+                            error: function(err) {
+                                console.error('Error saat mengambil data panitia:', err);
                             }
                         });
                         $('#form-action').on('submit', function(e) {
@@ -244,9 +295,9 @@
                     start_date: event.startStr,
                     end_date: event.end.toISOString().substring(0, 10),
                     title: event.title,
-                    category: event.extendedProps.category
-                };
+                    category: event.extendedProps.category,
 
+                };
                 // Ajax request untuk mengupdate acara
                 $.ajax({
                     url: `{{ url('events') }}/${event.id}`,
@@ -280,7 +331,6 @@
         calendar.render();
     });
 </script>
-
 
 <script>
     // Ambil elemen checkbox

@@ -27,9 +27,11 @@ class CreateEventsTable extends Migration
             $table->integer('harga_umum')->nullable();
             $table->integer('harga_staff')->nullable();
             $table->dateTime('batas_pendaftaran');
+            $table->integer('kuota')->nullable();
             $table->string('gambar');
             $table->string('terbuka_untuk');
-            $table->string('penganggung_jawab');
+            $table->unsignedBigInteger('penganggung_jawab');
+            $table->enum('status', ['0', '1'])->nullable();
             $table->timestamps();
         });
     }

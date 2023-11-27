@@ -45,4 +45,8 @@ class User extends Authenticatable
     public function userp(){
         return $this->hasMany(Pendaftaran_Acara::class,'user_id','id');
     }
+
+    public function panitia(){
+        return $this->hasMany(Acara::class,'penanggung_jawab','id');
+    }
 }

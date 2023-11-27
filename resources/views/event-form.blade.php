@@ -90,6 +90,10 @@
         <input type="datetime-local" class="form-control" value="{{ $data->batas_pendaftaran }}" name="batas_pendaftaran">
     </div>
     <div class="form-group">
+        <label for="">Kuota Peserta</label>
+        <input type="number" class="form-control" value="{{ $data->kuota }}" name="kuota">
+    </div>
+    <div class="form-group">
         <label for="exampleInputFile">Gambar</label>
         <div class="input-group">
             <div class="custom-file">
@@ -99,8 +103,10 @@
         </div>
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Penanggung Jawab</label>
-        <input type="text" class="form-control" name="penanggung_jawab" value="{{ $data->penanggung_jawab }}" placeholder="Penanggung Jawab">
+        <label>Penanggung Jawab</label>
+        <select class="custom-select" name="penanggung_jawab" id="panitiaForm1">
+            <option selected>Choose...</option>
+        </select>
     </div>
     <div class="row mt-3" style="display: flex; justify-content:space-between;">
         <div>
@@ -167,4 +173,10 @@
             console.log(eventId)
         });
     </script> -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var selectPenanggungJawab = document.querySelector('panitiaForm1');
+
+        });
+    </script>
 </x-modal-action>

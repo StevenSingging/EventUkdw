@@ -48,7 +48,7 @@
 
 <body>
     <nav class="navbar sticky-top navbar-light bg-light">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
             <img src="{{asset('AdminLTE-3.2.0/dist/img/LOGO UKDW WARNA PNG.png')}}" width="30" height="40" class="d-inline-block align-top" alt="">
             SI Event UKDW
         </a>
@@ -81,10 +81,7 @@
 
                             <div class="flex flex-col">
                                 <div class="mb-4 flex items-center text-sm font-medium">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2 text-indigo-500">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                                    </svg>
+                                    <i class="fa-solid fa-location-dot fa-lg  mr-2" style="color:cadetblue"></i>
 
                                     {{ $event->lokasi}}
                                 </div>
@@ -116,18 +113,29 @@
 
                                     // Tampilkan hanya satu kali jika tanggal mulai dan tanggal selesai sama
                                     if ($startFormatted == $endFormatted) {
-                                        echo date('H:i', strtotime($event->waktu_mulai)). ' - ' . date('H:i', strtotime($event->selesai)). ' WIB';
-                                       
+                                    echo date('H:i', strtotime($event->waktu_mulai)). ' - ' . date('H:i', strtotime($event->selesai)). ' WIB';
+
                                     } else {
-                                        echo date('H:i', strtotime($event->waktu_mulai)). ' WIB';
+                                    echo date('H:i', strtotime($event->waktu_mulai)). ' WIB';
                                     }
                                     @endphp
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="mb-4 flex items-center text-sm font-medium">
+                                    <i class="fa-solid fa-users fa-lg ml-3 mr-2" style="color:cadetblue"></i>
+                                    @if($event->kuota != null)
+                                    {{ $event->kuota  }} Orang  
+                                    @else
+                                    -
+                                    @endif
                                 </div>
                             </div>
                         </div>
                         <p class="card-text">
                             {!! nl2br(e($event->deskripsi)) !!} <br>
-                            CP : {{$event->penanggung_jawab}}
+                            CP : {{ $event->panitiaa->nama  }} - {{ $event->panitiaa->nowa  }} <br>
+
                         </p>
 
                         <a href="/login" class="mt-auto btn btn-primary  ">Daftar Sekarang</a>

@@ -9,8 +9,9 @@ use App\Models\History;
 use App\Models\Pendaftaran_Acara;
 use App\Models\Pembayaran;
 use PDF;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
-
+use PDO;
 
 class AdminController extends Controller
 {
@@ -18,14 +19,22 @@ class AdminController extends Controller
 
     public function index()
     {
+        $acara = Acara::whereNull('status')->paginate();
+        return view('biro4.dashboard',compact('acara'));
+    }
 
-        return view('biro4.dashboard');
+    public function validasipengajuan(Request $request,$id){
+        $acara = Acara::find($id);
+        $acara->status = $request->status;
+        $acara->save();
+
+        return redirect()->back();
     }
 
     public function acara()
     {
-
-        return view('biro4.manage_acara');
+        $panitia = User::where('role','Panitia')->get();
+        return view('biro4.manage_acara',compact('panitia'));
     }
 
     public function listacara(Request $request)
@@ -33,8 +42,15 @@ class AdminController extends Controller
         $start = date('YYYY-MM-DD ', strtotime($request->waktu_mulai));
         $end = date('YYYY-MM-DD ', strtotime($request->waktu_selesai));
 
-        $events = Acara::where('waktu_mulai', '>=', $start)->orWhere('waktu_selesai', '<=', $end)->get()
-            ->map(fn ($item) => [
+        $events = Acara::where(function($query) use ($start, $end) {
+            $query->where('status', '1')
+                ->where(function($query) use ($start, $end) {
+                    $query->where('waktu_mulai', '>=', $start)
+                          ->orWhere('waktu_selesai', '<=', $end);
+                });
+        })->get()
+        ->map(function($item) {
+            return [
                 'id' => $item->id,
                 'jenis_acara' => $item->jenis_acara,
                 'title' => $item->nama_acara,
@@ -47,12 +63,20 @@ class AdminController extends Controller
                 'harga_mhs' => $item->harga_mhs,
                 'harga_umum' => $item->harga_umum,
                 'batas_pendaftaran' => $item->batas_pendaftaran,
+                'kuota' => $item->kuota,
                 'gambar' => $item->gambar,
-                'terbuka_untuk' => $item->terbuka_untuk
-
-            ]);
-
+                'terbuka_untuk' => $item->terbuka_untuk,
+                'penanggung_jawab' => $item->penanggung_jawab,
+                'status' => $item->status
+            ];
+        });
+            
         return response()->json($events);
+    }
+
+    public function listuser(){
+        $panitia = User::where('role','Panitia')->get();
+        return response()->json($panitia);
     }
 
     public function simpanacara(Request $request, Acara $event)
@@ -70,6 +94,7 @@ class AdminController extends Controller
             $event->harga_mhs = $request->harga_mhs;
             $event->harga_staff = $request->harga_staff;
             $event->batas_pendaftaran = $request->batas_pendaftaran;
+            $event->kuota = $request->kuota;
             $event->penanggung_jawab = $request->penanggung_jawab;
             $event->terbuka_untuk = json_encode($request->input('terbuka_untuk'));
             if ($request->hasFile('gambar')) {
@@ -124,6 +149,7 @@ class AdminController extends Controller
             $event->harga_mhs = $request->harga_mhs;
             $event->harga_staff = $request->harga_staff;
             $event->batas_pendaftaran = $request->batas_pendaftaran;
+            $event->kuota = $request->kuota;
             $event->penanggung_jawab = $request->penanggung_jawab;
             $event->terbuka_untuk = json_encode($request->input('terbuka_untuk'));
             if ($request->hasFile('gambar')) {

@@ -42,7 +42,10 @@ Route::group(['middleware' => ['auth','cekrole:Biro 4']],function(){
     Route::get('/list/acara','\App\Http\Controllers\AdminController@listacara')->name('acara.list');
     Route::get('/manage_acara/biro4','\App\Http\Controllers\AdminController@acara')->name('manage');
     Route::resource('events', AdminController::class);
+    Route::get('/list/user','\App\Http\Controllers\AdminController@listuser')->name('users.list');
     Route::delete('/eventsdelete/{eventId}', '\App\Http\Controllers\AdminController@destroy')->name('events.destroy');
+    Route::post('/validasipengajuan/biro4/{id}','\App\Http\Controllers\AdminController@validasipengajuan')->name('acara.validasi');
+
 });
 
 Route::group(['middleware' => ['auth','cekrole:Mahasiswa']],function(){
@@ -94,5 +97,7 @@ Route::group(['middleware' => ['auth','cekrole:Panitia']],function(){
     Route::post('/update_peserta/panitia/{id}','\App\Http\Controllers\PanitiaController@validasipendaftaran')->name('validasi.peserta');
     Route::get('/downloadpeserta/panitia/{id}','\App\Http\Controllers\PanitiaController@cetakpeserta')->name('cetak.peserta');
     Route::post('/update_pembayaran/panitia/{id}','\App\Http\Controllers\PanitiaController@updatepembayaran')->name('validasi.pembayaran');
+    Route::get('/pengajuanacara/panitia','\App\Http\Controllers\PanitiaController@pengajuanacara')->name('pengajuan.panitia');
+    Route::post('/simpanpengajuanacara','\App\Http\Controllers\PanitiaController@simpanpengajuan')->name('simpanpengajuanacara');
 
 });
