@@ -35,8 +35,8 @@ class MahasiswaController extends Controller
         foreach ($acara as $a) {
             $terbuka_untuk = json_decode($a->terbuka_untuk);
 
-            if (in_array('Mahasiswa', $terbuka_untuk) || in_array('Umum', $terbuka_untuk)  ) {
-                if($a->status == '1'){
+            if (in_array('Mahasiswa', $terbuka_untuk) || in_array('Umum', $terbuka_untuk)) {
+                if ($a->status == '1') {
                     $events[] = [
                         'id' => $a->id,
                         'jenis_acara' => $a->jenis_acara,
@@ -55,7 +55,6 @@ class MahasiswaController extends Controller
                         'kouta' => $a->kuota,
                     ];
                 }
-                
             }
         }
 
@@ -87,35 +86,52 @@ class MahasiswaController extends Controller
             return redirect('/dashboard/mhs')->with($sucess);
         }
 
-        $daftar = new Pendaftaran_Acara();
-        $daftar->user_id = $request->user()->id;
-        $daftar->acara_id = $acara->id;
-        $daftar->save();
+        if ($acara->kuota <= 0) {
+            $sucess = array(
+                'message' => 'Kuota Acara Sudah Habis',
+                'alert-type' => 'error'
+            );
+            // Pengguna sudah mendaftar, berikan pesan kesalahan atau tindakan lain.
+            return redirect('/dashboard/mhs')->with($sucess);
+        } else {
+            if ($acara->harga_mhs != null) {
 
-        if ($acara->harga_mhs != null) {
+                $daftar = new Pendaftaran_Acara();
+                $daftar->user_id = $request->user()->id;
+                $daftar->acara_id = $acara->id;
+                $daftar->status = '1';
+                $daftar->save();
 
-            $pembayaran = new Pembayaran();
-            $pembayaran->user_id = $request->user()->id;
-            $pembayaran->acara_id = $acara->id;
-            $pembayaran->pendaftaran_id = $daftar->id;
-            $pembayaran->jumlah_pembayaran = $acara->harga_mhs;
-            $pembayaran->save();
+                $pembayaran = new Pembayaran();
+                $pembayaran->user_id = $request->user()->id;
+                $pembayaran->acara_id = $acara->id;
+                $pembayaran->pendaftaran_id = $daftar->id;
+                $pembayaran->jumlah_pembayaran = $acara->harga_mhs;
+                $pembayaran->save();
+            } else {
+
+                $daftar = new Pendaftaran_Acara();
+                $daftar->user_id = $request->user()->id;
+                $daftar->acara_id = $acara->id;
+                $daftar->status = '1';
+                $daftar->save();
+
+                $acara->kuota = $acara->kuota - 1;
+                $acara->save();
+            }
+            $riwayat = new History();
+            $riwayat->user_id = $request->user()->id;
+            $riwayat->acara_id = $acara->id;
+            $riwayat->judul = 'Mendaftar Acara ' . $acara->nama_acara;
+            $riwayat->save();
+
+            $sucess = array(
+                'message' => 'Anda berhasil mendaftar acara',
+                'alert-type' => 'success'
+            );
+
+            return redirect('/dashboard/mhs')->with($sucess);
         }
-
-
-
-        $riwayat = new History();
-        $riwayat->user_id = $request->user()->id;
-        $riwayat->acara_id = $acara->id;
-        $riwayat->judul = 'Mendaftar Acara ' . $acara->nama_acara;
-        $riwayat->save();
-
-        $sucess = array(
-            'message' => 'Anda berhasil mendaftar acara',
-            'alert-type' => 'success'
-        );
-
-        return redirect('/dashboard/mhs')->with($sucess);
     }
 
     public function daftaracara()

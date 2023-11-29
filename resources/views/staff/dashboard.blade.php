@@ -141,7 +141,7 @@
                     '<h5>' + eventData.title + '</h5>' +
                     '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px"/>' + // Menampilkan gambar
                     '<p>' + deskripsi + '</p>' +
-                    '<br>' + '<p>' + 'CP : '+ penanggung_jawab +' - ' + nowa +'</p>' + 
+                    '<br>' + '<p>' + '<b>' + 'CP : '+ penanggung_jawab +' - ' + nowa + '</b>' + '</p>' + 
                     hargaText + '<p>' + 'Kouta Peserta : '+ kouta +'</p>'
                     // Tambahkan atribut lainnya sesuai kebutuhan
                 );

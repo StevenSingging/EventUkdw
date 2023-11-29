@@ -29,6 +29,10 @@
                     <input type="text" class="form-control" name="nama_acara" value="{{$acara->nama_acara}}" placeholder="Nama Acara" disabled>
                 </div>
                 <div class="form-group">
+                    <label for="exampleInputPassword1">NIP</label>
+                    <input type="text" class="form-control" name="nama_acara" value="{{auth()->user()->nidn}}" placeholder="Nama Acara" disabled>
+                </div>
+                <div class="form-group">
                     <label for="exampleInputPassword1">Nama</label>
                     <input type="text" class="form-control" name="nama_acara" value="{{auth()->user()->nama}}" placeholder="Nama Acara" disabled>
                 </div>

@@ -132,7 +132,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Penanggung Jawab</label>
-                            <select class="custom-select" name="jenis_acara">
+                            <select class="custom-select" name="penanggung_jawab">
                                 <option selected>Choose...</option>
                                 @foreach($panitia as $p)
                                 <option value="{{$p->id}}">{{$p->nama}} - {{$p->nowa}}</option>
@@ -141,7 +141,7 @@
                         </div>
 
 
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Publish</button>
 
                     </form>
                 </div>

@@ -83,24 +83,36 @@ class PanitiaController extends Controller
         $status = $request->input('status');
         $history = new History();
         // Validasi status yang diterima
-        if ($status === '0' || $status === '1') {
+        if ($status === '0') {
             $pembayaran->pembayaran->status_pembayaran = $request->status;
             $pembayaran->pembayaran->save();
 
             $history->user_id = $pembayaran->user_id;
             $history->acara_id = $pembayaran->acara_id;
-            if ($status === '1') {
-                $history->judul = 'Status Pembayaran Acara ' . $pembayaran->acarap->nama_acara . ' Anda Telah Diubah Menjadi Valid';
-            } elseif ($status === '0') {
-                $history->judul = 'Status Pembayaran Acara ' . $pembayaran->acarap->nama_acara . ' Anda Telah Diubah Menjadi Tidak Valid';
-            }
+            $history->judul = 'Status Pembayaran Acara ' . $pembayaran->acarap->nama_acara . ' Anda Telah Diubah Menjadi Tidak Valid';
             $history->save();
+            $sucess = array(
+                'message' => 'Berhasil validasi Pembayaran',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($sucess);
 
+        } elseif( $status === '1') {
+            $pembayaran->pembayaran->status_pembayaran = $request->status;
+            $pembayaran->pembayaran->save();
 
-            return redirect()->back()->with('sucess', ' data berhasil');
-        } else {
-            // Tambahkan penanganan kesalahan jika status tidak valid
-            return redirect()->back()->with('error', ' ');
+            $pembayaran->acarap->kuota = $pembayaran->acarap->kuota - 1;
+            $pembayaran->acarap->save();
+
+            $history->user_id = $pembayaran->user_id;
+            $history->acara_id = $pembayaran->acara_id;
+            $history->judul = 'Status Pembayaran Acara ' . $pembayaran->acarap->nama_acara . ' Anda Telah Diubah Menjadi Valid';
+            $history->save();
+            $sucess = array(
+                'message' => 'Berhasil validasi Pembayaran',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($sucess);
         }
     }
 

@@ -26,11 +26,15 @@
             {{ csrf_field() }}
                 <div class="form-group">
                     <label for="exampleInputPassword1">Nama Acara</label>
-                    <input type="text" class="form-control" name="nama_acara" value="{{$acara->nama_acara}}" placeholder="Nama Acara" disabled>
+                    <input type="text" class="form-control" value="{{$acara->nama_acara}}" placeholder="Nama Acara" disabled>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">NIP</label>
+                    <input type="text" class="form-control" value="{{auth()->user()->nidn}}" placeholder="Nama Acara" disabled>
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Nama</label>
-                    <input type="text" class="form-control" name="nama_acara" value="{{auth()->user()->nama}}" placeholder="Nama Acara" disabled>
+                    <input type="text" class="form-control" value="{{auth()->user()->nama}}" placeholder="Nama Acara" disabled>
                 </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </form>

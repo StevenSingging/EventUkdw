@@ -12,6 +12,7 @@ use PDF;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use PDO;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -103,6 +104,7 @@ class AdminController extends Controller
                 $gambar->move(public_path('fotoacara'), $namaGambar);
                 $event->gambar = $namaGambar;
             }
+            $event->status = '1';
             $event->save();
             $sucess = array(
                 'message' => 'Anda sudah membuat acara',
@@ -243,7 +245,15 @@ class AdminController extends Controller
         ->orwhereNotNull('harga_dosen')
         ->orwhereNotNull('harga_umum')
         ->paginate();
-        return view('biro2.dashboard', compact('event'));
+
+        $revenueByEvent = Pembayaran::whereIn('acara_id', $event->pluck('id')->toArray())
+        ->where('status_pembayaran','1')
+        ->select('acara_id', DB::raw('SUM(jumlah_pembayaran) as total_revenue'))
+        ->groupBy('acara_id')
+        ->pluck('total_revenue', 'acara_id');
+
+        
+        return view('biro2.dashboard', compact('event', 'revenueByEvent'));
     }
 
     public function peserta_acara_biro2($id)

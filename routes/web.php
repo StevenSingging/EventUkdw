@@ -32,7 +32,9 @@ Route::get('/showevent/{id}','\App\Http\Controllers\AdminController@lihatacara')
 
 
 Route::group(['middleware' => ['auth','cekrole:Biro 2']],function(){
-    Route::get('/dashboard/biro2','\App\Http\Controllers\AdminController@dashboardb2')->name('dashboard.biro2');    
+    Route::get('/dashboard/biro2','\App\Http\Controllers\AdminController@dashboardb2')->name('dashboard.biro2');
+    Route::get('/validasipembayaran/biro2/{id}','\App\Http\Controllers\AdminController@peserta_acara_biro2')->name('peserta.acara.bayar');
+    
 });  
 
 Route::group(['middleware' => ['auth','cekrole:Biro 4']],function(){

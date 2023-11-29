@@ -7,11 +7,11 @@
   <title>Document</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <style>
-    * {
+    /* * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-    }
+    } */
 
     .fancy {
       --b: 6px;
@@ -101,7 +101,7 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
-  <div class="container">
+  <div class="container-fluid">
     <h1 class="fancy">Event Terbaru</h1>
     <div class="card-deck">
     @foreach($event as $ev)

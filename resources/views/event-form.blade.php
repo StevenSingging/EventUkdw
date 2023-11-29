@@ -113,7 +113,7 @@
             <button type="button" class="btn btn-danger" name="delete" id="deleteButton">Hapus</button>
         </div>
         <div>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
         </div>
     </div>
     <script>

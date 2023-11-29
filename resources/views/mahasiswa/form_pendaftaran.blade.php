@@ -29,10 +29,14 @@
                     <input type="text" class="form-control" name="nama_acara" value="{{$acara->nama_acara}}" placeholder="Nama Acara" disabled>
                 </div>
                 <div class="form-group">
+                    <label for="exampleInputPassword1">NIM</label>
+                    <input type="text" class="form-control" name="nama_acara" value="{{auth()->user()->nim}}" placeholder="Nama Acara" disabled>
+                </div>
+                <div class="form-group">
                     <label for="exampleInputPassword1">Nama</label>
                     <input type="text" class="form-control" name="nama_acara" value="{{auth()->user()->nama}}" placeholder="Nama Acara" disabled>
                 </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="submit" class="btn btn-primary">Daftar</button>
             </form>
         </div>
     </div>
