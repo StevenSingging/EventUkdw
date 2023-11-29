@@ -59,13 +59,13 @@
 
                         </td>
                         <td>
-                            @if($ev->acarap->harga_mhs == null)
+                            @if($ev->acarap->harga_staff == null)
                             <span class="badge badge-success">Gratis</span>
-                            @elseif($ev->acarap->harga_mhs != null && $ev->status == null)
+                            @elseif($ev->acarap->harga_staff != null && $ev->status == null)
                             <span class="badge badge-warning">Dalam Progress</span>
-                            @elseif($ev->acarap->harga_mhs != null && $ev->status == '1')
+                            @elseif($ev->acarap->harga_staff != null && $ev->status == '1')
                             <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#pembayaran{{$ev->id}}">Bayar Disini</button>
-                            @elseif($ev->acarap->harga_mhs != null && $ev->status == '0')
+                            @elseif($ev->acarap->harga_staff != null && $ev->status == '0')
                             <span class="badge badge-danger">Tidak Valid</span>
                             @endif
                         </td>
