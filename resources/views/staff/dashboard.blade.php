@@ -103,6 +103,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
+     function showToast() {
+        toastr["error"]("Pendaftaran telah lewat");
+    }
     const modal = $('#modal-action')
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -132,6 +135,10 @@
                 var penanggung_jawab = eventData.extendedProps.penanggung_jawab;
                 var nowa = eventData.extendedProps.nowa;
                 var hargastaff = eventData.extendedProps.harga_staff;
+                var batas = eventData.extendedProps.batas_pendaftaran;
+                var currentDate = new Date().toISOString().slice(0, 10);
+                var dateObj = new Date(batas);
+                var batasPendaftaranTanggal = dateObj.toISOString().slice(0, 10);
                 var kouta = eventData.extendedProps.kouta;
                 var hargaText = hargastaff !== null ? '<p>' + 'Harga : ' + hargastaff + '</p>' : '';
                 deskripsi = deskripsi.replace(/\n/g, '<br>');
@@ -149,8 +156,19 @@
                     if (jenis_acara == 'Job Fair') {
                         return '<div>'+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>'+'</div>'; // Atau kode HTML sesuai kebutuhan jika jenis_acara adalah 'JobFair'
                     } else {
-                        return '<div>'+ '<a href="' + '{{ url('form_daftar_acara/staff') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>' +'</div>'+
-                        '<div>'+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +'</div>';
+                        if (batasPendaftaranTanggal < currentDate) {
+                            return '<div>' +
+                                '<button onclick="showToast()" class="btn btn-primary"> Daftar Sekarang </button>' +
+                                '</div>'+
+                            '<div>' +
+                            '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
+                            '</div>';
+                        } else {
+                            return '<div>' + '<a href="' + '{{ url('form_daftar_acara/staff') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>' + '</div>' +
+                                '<div>' +
+                                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
+                                '</div>';
+                        }
                     }
                     
                 });

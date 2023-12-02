@@ -134,7 +134,8 @@
                         </div>
                         <p class="card-text">
                             {!! nl2br(e($event->deskripsi)) !!} <br>
-                            CP : {{ $event->panitiaa->nama  }} - {{ $event->panitiaa->nowa  }} <br>
+                            
+                            <b>CP : {{ $event->panitiaa->nama  }} - {{ $event->panitiaa->nowa  }}</b> <br>
 
                         </p>
 

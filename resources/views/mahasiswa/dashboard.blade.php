@@ -103,6 +103,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
+    function showToast() {
+        toastr["error"]("Pendaftaran telah lewat");
+    }
     const modal = $('#modal-action')
     document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
@@ -133,6 +136,10 @@
                 var nowa = eventData.extendedProps.nowa;
                 var hargamhs = eventData.extendedProps.harga_mhs;
                 var kouta = eventData.extendedProps.kouta;
+                var batas = eventData.extendedProps.batas_pendaftaran;
+                var currentDate = new Date().toISOString().slice(0, 10);
+                var dateObj = new Date(batas);
+                var batasPendaftaranTanggal = dateObj.toISOString().slice(0, 10);
                 var hargaText = hargamhs !== null ? '<p>' + 'Harga : ' + hargamhs + '</p>' : '';
                 deskripsi = deskripsi.replace(/\n/g, '<br>');
                 console.log(eventData);
@@ -141,20 +148,34 @@
                     '<h5>' + eventData.title + '</h5>' +
                     '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px"/>' + // Menampilkan gambar
                     '<p>' + deskripsi + '</p>' +
-                    '<br>' + '<p>' + '<b>' + 'CP : '+ penanggung_jawab +' - ' + nowa + '</b>' + '</p>' + 
-                    hargaText + '<p>' + 'Kouta Peserta : '+ kouta +'</p>' 
+                    '<br>' + '<p>' + '<b>' + 'CP : ' + penanggung_jawab + ' - ' + nowa + '</b>' + '</p>' +
+                    hargaText + '<p>' + 'Kouta Peserta : ' + kouta + '</p>'
                     // Tambahkan atribut lainnya sesuai kebutuhan
                 );
                 modal.find('.modal-footer').html(function() {
                     if (jenis_acara == 'Job Fair') {
-                        return '<div>'+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>'+'</div>'; // Atau kode HTML sesuai kebutuhan jika jenis_acara adalah 'JobFair'
+                        return '<div>' + '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' + '</div>'; // Atau kode HTML sesuai kebutuhan jika jenis_acara adalah 'JobFair'
                     } else {
-                        return '<div>'+ '<a href="' + '{{ url('form_daftar_acara/mhs') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>' +'</div>'+
-                        '<div>'+'<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +'</div>';
+                        console.log(batasPendaftaranTanggal, currentDate);
+                        if (batasPendaftaranTanggal < currentDate) {
+                            return '<div>' +
+                                '<button onclick="showToast()" class="btn btn-primary"> Daftar Sekarang </button>' +
+                                '</div>'+
+                            '<div>' +
+                            '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
+                            '</div>';
+                        } else {
+                            return '<div>' + '<a href="' + '{{ url('form_daftar_acara/mhs') }}' + '/' + eventData.id + '" class="btn btn-primary"> Daftar Sekarang </a>' + '</div>' +
+                                '<div>' +
+                                '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' +
+                                '</div>';
+                        }
+
                     }
                     
                 });
-
+                
+               
                 modal.modal('show');
             }
         });
