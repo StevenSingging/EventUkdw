@@ -218,12 +218,7 @@
                                         calendar.refetchEvents();
                                     },
                                     error: function(res) {
-                                        const message = res.responseJSON.message || 'Terjadi kesalahan';
-                                        iziToast.error({
-                                            title: 'Error',
-                                            message: message,
-                                            position: 'topRight'
-                                        });
+                                        toastr["error"]("Terjadi Kesalahan");
                                     }
                                 });
                             }
@@ -280,6 +275,7 @@
                                 success: function(res) {
                                     modal.modal('hide')
                                     calendar.refetchEvents()
+                                    toastr["success"]("Berhasil Mengedit Data");
                                 }
                             })
                         })
@@ -308,20 +304,12 @@
                         'Accept': 'application/json'
                     },
                     success: function(res) {
-                        iziToast.success({
-                            title: 'Success',
-                            message: res.message,
-                            position: 'topRight'
-                        });
+                        toastr["success"]("Berhasil Mengedit Data");
                     },
                     error: function(res) {
                         const message = res.responseJSON.message;
                         info.revert();
-                        iziToast.error({
-                            title: 'Error',
-                            message: message ?? 'Something wrong',
-                            position: 'topRight'
-                        });
+                        toastr["error"](message);
                     }
                 });
 

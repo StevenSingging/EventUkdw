@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use PDO;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class AdminController extends Controller
 {
@@ -21,10 +22,39 @@ class AdminController extends Controller
     public function index()
     {
         $acara = Acara::whereNull('status')->paginate();
-        return view('biro4.dashboard',compact('acara'));
+        $countacara = Acara::where('status', '1')
+            ->whereYear('waktu_mulai', '=', Carbon::now()->year)
+            ->whereMonth('waktu_mulai', '=', Carbon::now()->month)
+            ->count();
+        $countuser = User::count();
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        // Retrieve the counts of participants for each event in the current month
+        $countPesertaByEvent = Acara::withCount([
+            'acarap' => function ($query) use ($currentMonth, $currentYear) {
+                $query->whereMonth('created_at', '=', $currentMonth)
+                    ->whereYear('created_at', '=', $currentYear);
+            }
+        ])
+            ->where('status', '1')
+            ->get();
+
+        // Access the counts for each event
+        foreach ($countPesertaByEvent as $event) {
+            $countpeserta = $event->acarap->count();
+            // $countPeserta now contains the count of participants for each event in the current month
+        }
+
+        $revenueByEvent = Pembayaran::where('status_pembayaran', '1')
+            ->select(DB::raw('SUM(jumlah_pembayaran) as total_revenue'))
+            ->first()
+            ->total_revenue;
+        return view('biro4.dashboard', compact('acara', 'countacara', 'countuser', 'countpeserta', 'revenueByEvent'));
     }
 
-    public function validasipengajuan(Request $request,$id){
+    public function validasipengajuan(Request $request, $id)
+    {
         $acara = Acara::find($id);
         $acara->status = $request->status;
         $acara->save();
@@ -34,8 +64,8 @@ class AdminController extends Controller
 
     public function acara()
     {
-        $panitia = User::where('role','Panitia')->get();
-        return view('biro4.manage_acara',compact('panitia'));
+        $panitia = User::where('role', 'Panitia')->get();
+        return view('biro4.manage_acara', compact('panitia'));
     }
 
     public function listacara(Request $request)
@@ -43,40 +73,41 @@ class AdminController extends Controller
         $start = date('YYYY-MM-DD ', strtotime($request->waktu_mulai));
         $end = date('YYYY-MM-DD ', strtotime($request->waktu_selesai));
 
-        $events = Acara::where(function($query) use ($start, $end) {
+        $events = Acara::where(function ($query) use ($start, $end) {
             $query->where('status', '1')
-                ->where(function($query) use ($start, $end) {
+                ->where(function ($query) use ($start, $end) {
                     $query->where('waktu_mulai', '>=', $start)
-                          ->orWhere('waktu_selesai', '<=', $end);
+                        ->orWhere('waktu_selesai', '<=', $end);
                 });
         })->get()
-        ->map(function($item) {
-            return [
-                'id' => $item->id,
-                'jenis_acara' => $item->jenis_acara,
-                'title' => $item->nama_acara,
-                'start' => $item->waktu_mulai,
-                'end' => $item->waktu_selesai,
-                'color' => $item->warna,
-                'deskripsi' => $item->deskripsi,
-                'lokasi' => $item->lokasi,
-                'harga_dosen' => $item->harga_dosen,
-                'harga_mhs' => $item->harga_mhs,
-                'harga_umum' => $item->harga_umum,
-                'batas_pendaftaran' => $item->batas_pendaftaran,
-                'kuota' => $item->kuota,
-                'gambar' => $item->gambar,
-                'terbuka_untuk' => $item->terbuka_untuk,
-                'penanggung_jawab' => $item->penanggung_jawab,
-                'status' => $item->status
-            ];
-        });
-            
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'jenis_acara' => $item->jenis_acara,
+                    'title' => $item->nama_acara,
+                    'start' => $item->waktu_mulai,
+                    'end' => $item->waktu_selesai,
+                    'color' => $item->warna,
+                    'deskripsi' => $item->deskripsi,
+                    'lokasi' => $item->lokasi,
+                    'harga_dosen' => $item->harga_dosen,
+                    'harga_mhs' => $item->harga_mhs,
+                    'harga_umum' => $item->harga_umum,
+                    'batas_pendaftaran' => $item->batas_pendaftaran,
+                    'kuota' => $item->kuota,
+                    'gambar' => $item->gambar,
+                    'terbuka_untuk' => $item->terbuka_untuk,
+                    'penanggung_jawab' => $item->penanggung_jawab,
+                    'status' => $item->status
+                ];
+            });
+
         return response()->json($events);
     }
 
-    public function listuser(){
-        $panitia = User::where('role','Panitia')->get();
+    public function listuser()
+    {
+        $panitia = User::where('role', 'Panitia')->get();
         return response()->json($panitia);
     }
 
@@ -137,7 +168,7 @@ class AdminController extends Controller
      * Update the specified resource in storage.
      */
     public function update(EventRequest $request, Acara $event)
-    {   
+    {
         if (!empty($request->input('terbuka_untuk'))) {
             $event->jenis_acara = $request->jenis_acara;
             $event->nama_acara = $request->nama_acara;
@@ -177,7 +208,6 @@ class AdminController extends Controller
             'alert-type' => 'error'
         );
         return redirect()->back()->with($sucess);
- 
     }
 
     public function home()
@@ -242,18 +272,32 @@ class AdminController extends Controller
     public function dashboardb2()
     {
         $event = Acara::whereNotNull('harga_mhs')
-        ->orwhereNotNull('harga_dosen')
-        ->orwhereNotNull('harga_umum')
-        ->paginate();
+            ->orwhereNotNull('harga_dosen')
+            ->orwhereNotNull('harga_umum')
+            ->paginate();
 
         $revenueByEvent = Pembayaran::whereIn('acara_id', $event->pluck('id')->toArray())
-        ->where('status_pembayaran','1')
-        ->select('acara_id', DB::raw('SUM(jumlah_pembayaran) as total_revenue'))
-        ->groupBy('acara_id')
-        ->pluck('total_revenue', 'acara_id');
+            ->where('status_pembayaran', '1')
+            ->select('acara_id', DB::raw('SUM(jumlah_pembayaran) as total_revenue'))
+            ->groupBy('acara_id')
+            ->pluck('total_revenue', 'acara_id');
 
-        
-        return view('biro2.dashboard', compact('event', 'revenueByEvent'));
+        $totalpendapatan = Pembayaran::where('status_pembayaran', '1')
+            ->select(DB::raw('SUM(jumlah_pembayaran) as total_revenue'))
+            ->first()
+            ->total_revenue;
+
+            $countacara = Acara::where('status', '1')
+            ->where(function ($query) {
+                $query->whereNotNull('harga_mhs')
+                      ->orWhereNotNull('harga_dosen')
+                      ->orWhereNotNull('harga_umum');
+            })
+            ->whereYear('waktu_mulai', '=', Carbon::now()->year)
+            ->whereMonth('waktu_mulai', '=', Carbon::now()->month)
+            ->count();
+
+        return view('biro2.dashboard', compact('event', 'revenueByEvent', 'totalpendapatan','countacara'));
     }
 
     public function peserta_acara_biro2($id)

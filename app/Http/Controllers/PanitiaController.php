@@ -1,24 +1,58 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Acara;
 use Illuminate\Http\Request;
 use App\Models\Pendaftaran_Acara;
 use App\Models\History;
 use PDF;
+use App\Models\Pembayaran;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class PanitiaController extends Controller
 {
     public function index()
     {
         $event = Acara::whereNotNull('harga_mhs')
-        ->orwhereNotNull('harga_dosen')
-        ->orwhereNotNull('harga_umum')
-        ->where('penanggung_jawab', auth()->user()->id)
-        ->where('status','1')
-        ->paginate();
-        $acara = Acara::where('penanggung_jawab', auth()->user()->id)->where('status','1')->paginate();
-        return view('panitia.dashboard',compact('event','acara'));
+            ->orwhereNotNull('harga_dosen')
+            ->orwhereNotNull('harga_umum')
+            ->where('penanggung_jawab', auth()->user()->id)
+            ->where('status', '1')
+            ->paginate();
+        $acara = Acara::where('penanggung_jawab', auth()->user()->id)->where('status', '1')->paginate();
+
+
+        $countacara = Acara::where('status', '1')->where('penanggung_jawab', auth()->user()->id)
+            ->whereYear('waktu_mulai', '=', Carbon::now()->year)
+            ->whereMonth('waktu_mulai', '=', Carbon::now()->month)
+            ->count();
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        // Retrieve the counts of participants for each event in the current month
+        $countPesertaByEvent = Acara::withCount([
+            'acarap' => function ($query) use ($currentMonth, $currentYear) {
+                $query->whereMonth('created_at', '=', $currentMonth)
+                    ->whereYear('created_at', '=', $currentYear);
+            }
+        ])
+            ->where('penanggung_jawab', auth()->user()->id)
+            ->where('status', '1')
+            ->get();
+
+        // Access the counts for each event
+        foreach ($countPesertaByEvent as $eventt) {
+            $countpeserta = $eventt->acarap->count();
+            // $countPeserta now contains the count of participants for each event in the current month
+        }
+        $revenueByEvent = Pembayaran::where('status_pembayaran', '1')
+            ->select(DB::raw('SUM(jumlah_pembayaran) as total_revenue'))
+            ->first()
+            ->total_revenue;
+       
+        return view('panitia.dashboard', compact('event', 'acara','countacara','countpeserta','revenueByEvent'));
     }
 
     public function peserta_acara_biro2($id)
@@ -96,8 +130,7 @@ class PanitiaController extends Controller
                 'alert-type' => 'success'
             );
             return redirect()->back()->with($sucess);
-
-        } elseif( $status === '1') {
+        } elseif ($status === '1') {
             $pembayaran->pembayaran->status_pembayaran = $request->status;
             $pembayaran->pembayaran->save();
 
@@ -116,12 +149,14 @@ class PanitiaController extends Controller
         }
     }
 
-    public function pengajuanacara(){
+    public function pengajuanacara()
+    {
         $acara = Acara::where('penanggung_jawab', auth()->user()->id)->paginate();
-        return view('panitia.pengajuanacara',compact('acara'));
+        return view('panitia.pengajuanacara', compact('acara'));
     }
 
-    public function simpanpengajuan(Request $request){
+    public function simpanpengajuan(Request $request)
+    {
         $acara = new Acara();
         if (!empty($request->input('terbuka_untuk'))) {
             $acara->jenis_acara = $request->jenis_acara;
