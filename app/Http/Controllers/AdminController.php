@@ -58,8 +58,12 @@ class AdminController extends Controller
         $acara = Acara::find($id);
         $acara->status = $request->status;
         $acara->save();
+        $sucess = array(
+            'message' => 'Berhasil Validasi Pengajuan',
+            'alert-type' => 'success'
+        );
 
-        return redirect()->back();
+        return redirect()->back()->with($sucess);
     }
 
     public function acara()

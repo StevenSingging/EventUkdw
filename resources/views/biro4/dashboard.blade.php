@@ -88,6 +88,9 @@
                         Pengaju
                     </th>
                     <th>
+                        No WA
+                    </th>
+                    <th>
                         Aksi
                     </th>
                 </tr>
@@ -113,6 +116,7 @@
                             @endforeach
                     </td>
                     <td>{{ $evt->panitiaa->nama }}</td>
+                    <td>{{ $evt->panitiaa->nowa }}</td>
                     <td>
                     <form action="{{route('acara.validasi',$evt->id)}}" method="post">
                             @csrf
