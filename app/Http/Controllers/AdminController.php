@@ -26,6 +26,9 @@ class AdminController extends Controller
             ->whereYear('waktu_mulai', '=', Carbon::now()->year)
             ->whereMonth('waktu_mulai', '=', Carbon::now()->month)
             ->count();
+         $countacarath = Acara::where('status', '1')
+            ->whereYear('waktu_mulai', '=', Carbon::now()->year)
+            ->count();
         $countuser = User::count();
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
@@ -50,7 +53,7 @@ class AdminController extends Controller
             ->select(DB::raw('SUM(jumlah_pembayaran) as total_revenue'))
             ->first()
             ->total_revenue;
-        return view('biro4.dashboard', compact('acara', 'countacara', 'countuser', 'countpeserta', 'revenueByEvent'));
+        return view('biro4.dashboard', compact('acara', 'countacara', 'countuser', 'countpeserta', 'revenueByEvent','countacarath'));
     }
 
     public function validasipengajuan(Request $request, $id)
@@ -68,7 +71,7 @@ class AdminController extends Controller
 
     public function acara()
     {
-        $panitia = User::where('role', 'Panitia')->get();
+        $panitia = User::where('role', 'Panitia')->orWhere('role', 'Biro 4')->get();
         return view('biro4.manage_acara', compact('panitia'));
     }
 
@@ -111,7 +114,7 @@ class AdminController extends Controller
 
     public function listuser()
     {
-        $panitia = User::where('role', 'Panitia')->get();
+        $panitia = User::where('role', 'Panitia')->orWhere('role', 'Biro 4')->get();
         return response()->json($panitia);
     }
 

@@ -5,7 +5,7 @@
     @endif
     <div class="form-group">
         <label for="exampleInputEmail1">Jenis Acara</label>
-        <select class="custom-select" name="jenis_acara">
+        <select class="custom-select" name="jenis_acara" id="jenis_acaraa">
             <option value="Seminar" {{ $data->jenis_acara === 'Seminar' ? 'selected' : '' }}>Seminar</option>
             <option value="Lomba" {{ $data->jenis_acara === 'Lomba' ? 'selected' : '' }}>Lomba</option>
             <option value="Workshop" {{ $data->jenis_acara === 'Workshop' ? 'selected' : '' }}>Workshop</option>
@@ -21,7 +21,7 @@
     </div>
     <div class="form-group">
         <label for="exampleInputPassword1">Warna</label>
-        <input type="color" class="form-control" name="warna" value="{{ $data->warna }}" placeholder="Password">
+        <input type="color" class="form-control" name="warna" id="warnaa" value="{{ $data->warna }}" placeholder="Password">
     </div>
     <div class="form-group">
         <label for="inputDescription">Deskripsi</label>
@@ -179,4 +179,48 @@
 
         });
     </script>
+
+<script>
+    // Ambil elemen-elemen yang diperlukan
+    const jenisAcara = document.getElementById('jenis_acaraa');
+    const warnaInput = document.getElementById('warnaa');
+
+    // Tambahkan event listener pada elemen jenis_acara
+    jenisAcara.addEventListener('change', function () {
+        // Ambil nilai jenis_acara yang dipilih
+        const selectedJenisAcara = jenisAcara.value;
+
+        // Tentukan warna berdasarkan jenis_acara
+        let color;
+        switch (selectedJenisAcara) {
+            case 'Seminar':
+                color = '#FF5733';
+                break;
+            case 'Lomba':
+                color = '#33FF57';
+                break;
+            case 'Workshop':
+                color = '#5733FF';
+                break;
+            case 'Pelatihan':
+                color = '#FF33A1';
+                break;
+            case 'Aktivitas Sosial':
+                color = '#FFD700';
+                break;
+            case 'Pameran':
+                color = '#4CAF50';
+                break;
+            case 'Job Fair':
+                color = '#008CBA';
+                break;
+            // Tambahkan case lain sesuai kebutuhan
+            default:
+                color = '#000000'; // Warna default jika jenis_acara tidak cocok
+        }
+
+        // Set nilai warna pada input
+        warnaInput.value = color;
+    });
+</script>
 </x-modal-action>

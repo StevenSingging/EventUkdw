@@ -72,7 +72,9 @@
                 <div class="col-md-7 px-3">
                     <div class="card-block px-6">
                         <h4 class="card-title">{{$event->nama_acara}}</h4>
+                        Terbuka Untuk : <br>
                         <div class="flex justify-start">
+                            
                             @foreach(json_decode($event->terbuka_untuk) as $key => $item)
                             <span class="p-1 m-1 bg-indigo-300 rounded mb-2">{{ $item }}</span>
                             @endforeach
