@@ -33,6 +33,7 @@ class AdminController extends Controller
         $currentMonth = Carbon::now()->month;
         $currentYear = Carbon::now()->year;
 
+        $countpeserta = [];
         // Retrieve the counts of participants for each event in the current month
         $countPesertaByEvent = Acara::withCount([
             'acarap' => function ($query) use ($currentMonth, $currentYear) {

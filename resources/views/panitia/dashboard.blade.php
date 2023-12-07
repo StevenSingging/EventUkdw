@@ -50,8 +50,11 @@
             <!-- small box -->
             <div class="small-box bg-success">
                 <div class="inner">
+                    @if(!empty($revenueByEvent))
                     <h3><sup style="font-size: 20px">Rp. </sup>{{$revenueByEvent}}</h3>
-
+                    @else
+                    <h3><sup style="font-size: 20px">Rp. </sup>0</h3>
+                    @endif
                     <p>Total Pembayaran</p>
                 </div>
                 <div class="icon">
