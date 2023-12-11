@@ -4,7 +4,7 @@
       <a href="{{route('dashboard.admin')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
-          Dashboard
+          Halaman Utama
 
         </p>
       </a>
@@ -33,7 +33,7 @@
       <a href="{{route('dashboard.biro2')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
-          Dashboard
+         Halaman Utama
 
         </p>
       </a>
@@ -44,7 +44,7 @@
       <a href="{{route('dashboard.mahasiswa')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
-          Dashboard
+          Halaman Utama
 
         </p>
       </a>
@@ -64,7 +64,7 @@
       <a href="{{route('dashboard.dosen')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
-          Dashboard
+          Halaman Utama
 
         </p>
       </a>
@@ -84,7 +84,7 @@
       <a href="{{route('dashboard.umum')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
-          Dashboard
+          Halaman Utama
 
         </p>
       </a>
@@ -104,7 +104,7 @@
       <a href="{{route('dashboard.staff')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
-          Dashboard
+          Halaman Utama
 
         </p>
       </a>
@@ -124,7 +124,7 @@
       <a href="{{route('dashboard.panitia')}}" class="nav-link {{ (request()->segment(1) == 'dashboard') ? 'active' : '' }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>
-          Dashboard
+          Halaman Utama
 
         </p>
       </a>

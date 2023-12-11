@@ -11,7 +11,7 @@
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
                     <li class="breadcrumb-item"><a href="">Beranda</a></li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class="breadcrumb-item active">Halaman Utama</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->
@@ -36,8 +36,11 @@
             <!-- small box -->
             <div class="small-box bg-danger">
                 <div class="inner">
+                    @if(!empty($countpeserta))
                     <h3>{{$countpeserta}}</h3>
-
+                    @else
+                    <h3>0</h3>
+                    @endif
                     <p>Total Peserta Acara (Bulan)</p>
                 </div>
                 <div class="icon">

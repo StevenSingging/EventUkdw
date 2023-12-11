@@ -96,7 +96,7 @@
 
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">Jenis Acara</label>
-                                    <select class="custom-select" name="jenis_acara">
+                                    <select class="custom-select" name="jenis_acara" id="jenis_acara">
                                         <option selected>Choose...</option>
                                         <option value="Seminar">Seminar</option>
                                         <option value="Lomba">Lomba</option>
@@ -113,7 +113,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputPassword1">Warna</label>
-                                    <input type="color" class="form-control" name="warna" id="exampleInputPassword1" placeholder="Password">
+                                    <input type="color" class="form-control" name="warna" id="warna" placeholder="Password">
                                 </div>
                                 <div class="form-group">
                                     <label for="inputDescription">Deskripsi</label>
@@ -245,5 +245,48 @@
         hargaInputumum.style.display = chkUmum.checked ? 'block' : 'none';
         hargaInputstaff.style.display = chkStaff.checked ? 'block' : 'none';
     }
+</script>
+<script>
+    // Ambil elemen-elemen yang diperlukan
+    const jenisAcara = document.getElementById('jenis_acara');
+    const warnaInput = document.getElementById('warna');
+
+    // Tambahkan event listener pada elemen jenis_acara
+    jenisAcara.addEventListener('change', function () {
+        // Ambil nilai jenis_acara yang dipilih
+        const selectedJenisAcara = jenisAcara.value;
+
+        // Tentukan warna berdasarkan jenis_acara
+        let color;
+        switch (selectedJenisAcara) {
+            case 'Seminar':
+                color = '#FF5733'; // Misalnya, Anda dapat mengganti warna ini sesuai keinginan
+                break;
+            case 'Lomba':
+                color = '#33FF57';
+                break;
+            case 'Workshop':
+                color = '#5733FF';
+                break;
+            case 'Pelatihan':
+                color = '#FF33A1';
+                break;
+            case 'Aktivitas Sosial':
+                color = '#FFD700';
+                break;
+            case 'Pameran':
+                color = '#4CAF50';
+                break;
+            case 'Job Fair':
+                color = '#008CBA';
+                break;
+            // Tambahkan case lain sesuai kebutuhan
+            default:
+                color = '#000000'; // Warna default jika jenis_acara tidak cocok
+        }
+
+        // Set nilai warna pada input
+        warnaInput.value = color;
+    });
 </script>
 @endsection
