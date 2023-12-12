@@ -15,12 +15,14 @@ class PanitiaController extends Controller
 {
     public function index()
     {
-        $event = Acara::whereNotNull('harga_mhs')
-            ->orwhereNotNull('harga_dosen')
-            ->orwhereNotNull('harga_umum')
-            ->where('penanggung_jawab', auth()->user()->id)
-            ->where('status', '1')
-            ->paginate();
+        $event = Acara::where(function($query) {
+            $query->whereNotNull('harga_mhs')
+                  ->orWhereNotNull('harga_dosen')
+                  ->orWhereNotNull('harga_umum');
+        })
+        ->where('penanggung_jawab', auth()->user()->id)
+        ->where('status', '1')
+        ->paginate();
         $acara = Acara::where('penanggung_jawab', auth()->user()->id)->where('status', '1')->paginate();
 
 
