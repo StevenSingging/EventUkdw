@@ -16,7 +16,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0"></h1>
+                <h1 class="m-0"></h1> 
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -140,23 +140,30 @@
                 var currentDate = new Date().toISOString().slice(0, 10);
                 var dateObj = new Date(batas);
                 var batasPendaftaranTanggal = dateObj.toISOString().slice(0, 10);
-                var hargaText = hargamhs !== null ? '<p>' + 'Harga : ' + hargamhs + '</p>' : '';
+                var hargaText = hargamhs !== null ? '<p>' + '<i class="fa-solid fa-money-bill fa-md mr-2" style="color:cadetblue"></i>' + hargamhs + '</p>' : '';
                 deskripsi = deskripsi.replace(/\n/g, '<br>');
+                var timeZoneOffset = 7 * 60; // 7 jam dalam menit
+                var eventDate = new Date(eventData.start);
+                eventDate.setMinutes(eventDate.getMinutes() + timeZoneOffset); 
+
+                // Mengambil jam dalam format HH:mm:ss
+                var mulai = eventDate.toISOString().slice(11, 16);
+
                 console.log(eventData);
                 // Menampilkan data event dalam modal
                 modal.find('.modal-body').html(
-                    '<h5>' + eventData.title + '</h5>' +
-                    '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px"/>' + // Menampilkan gambar
+                    '<h5>'+ '<b>' + eventData.title + '</b>' +'</h5>' +
+                    '<img src="{{ asset('fotoacara') }}' + '/' + gambar + '" style="display:block; margin-left:auto; margin-right:auto; width:70%; margin-bottom:5px; margin-top:5px;"/>' + // Menampilkan gambar
                     '<p>' + deskripsi + '</p>' +
-                    '<br>' + '<p>' + '<b>' + 'CP : ' + penanggung_jawab + ' - ' + nowa + '</b>' + '</p>' +
-                    hargaText + '<p>' + 'Kouta Peserta : ' + kouta + '</p>'
+                    '<br>' + '<p>' + '<b>' + '<i class="fa-solid fa-phone fa-md mr-2" style="color:cadetblue"></i>' + penanggung_jawab + ' - ' + nowa + '</b>' + '</p>' +
+                    hargaText + '<p>' + '<i class="fa-solid fa-users fa-md mr-2" style="color:cadetblue"></i>' + kouta + '</p>' + '<p>' + '<i class="fa-solid fa-clock fa-md mr-2" style="color:cadetblue"></i>' + mulai +' WIB </p>'
+                    + '<p>' + '<i class="fa-solid fa-calendar fa-md mr-2" style="color:cadetblue"></i>' + batas +' WIB </p>'
                     // Tambahkan atribut lainnya sesuai kebutuhan
                 );
                 modal.find('.modal-footer').html(function() {
                     if (jenis_acara == 'Job Fair') {
                         return '<div>' + '<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>' + '</div>'; // Atau kode HTML sesuai kebutuhan jika jenis_acara adalah 'JobFair'
                     } else {
-                        console.log(batasPendaftaranTanggal, currentDate);
                         if (batasPendaftaranTanggal < currentDate) {
                             return '<div>' +
                                 '<button onclick="showToast()" class="btn btn-primary"> Daftar Sekarang </button>' +
