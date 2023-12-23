@@ -53,7 +53,11 @@
                     <td scope="row">{{ $no++ + ($peserta->currentPage() - 1) * $peserta->perPage() }}</td>
                     <td>{{ $pst->userp->nama }}</td>
                     <td>{{ $pst->userp->role }}</td>
+                    @if($pst->pembayaran->tanggal_pembayaran != null)
                     <td>{{ date('d F Y', strtotime($pst->pembayaran->tanggal_pembayaran)) }}</td>
+                    @else
+                    <td></td>
+                    @endif
                     <td align="center">
                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#bukti{{$pst->id}}"><span class="fa-solid fa-magnifying-glass-dollar" aria-hidden="true"></span> Lihat Bukti</button>
                     </td>
